@@ -1,3 +1,4 @@
+// services/dbService.ts
 import SQLite from 'react-native-sqlite-storage';
 
 async function generateUuid(): Promise<string> {

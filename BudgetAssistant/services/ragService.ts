@@ -1,3 +1,4 @@
+// services/ragService.ts
 import { getLlamaContext } from './llamaService';
 // import * as db from './dbService';
 // import { embedText } from './embeddingService';
@@ -52,7 +53,7 @@ Assistant: `;
   // ${contextText}
 
   let buffer = '';
-  const flushTokenCount = 3;
+  const flushTokenCount = 5;
   let tokenCounter = 0;
 
   const result = await ctx.completion(

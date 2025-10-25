@@ -16,10 +16,22 @@ This is an [Expo](https://expo.dev) project created with [`create-expo-app`](htt
    npx expo prebuild
    ```
    
-3. Start the app
+3. Create the app
 
    ```bash
    npx react-native run-android
+   ```
+
+4. Start the app
+
+   ```bash
+   npx expo run
+   ```
+
+5. If app cannot turn on (TypeError: dependencies is not iterable)
+
+   ```bash
+   npm start -- --reset-cache
    ```
 
 In the output, you'll find options to open the app in a

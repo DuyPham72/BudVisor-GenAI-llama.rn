@@ -1,3 +1,4 @@
+// app/screens/SetupScreen.tsx
 import React, { useEffect, useState } from 'react';
 import { View, Text, Button, ActivityIndicator, Alert } from 'react-native';
 import RNFS from 'react-native-fs';

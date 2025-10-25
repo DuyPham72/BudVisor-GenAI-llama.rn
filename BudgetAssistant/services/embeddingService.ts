@@ -1,3 +1,4 @@
+// services/embeddingService.ts
 import { getLlamaContext } from './llamaService';
 
 export async function embedText(text: string): Promise<number[]> {
