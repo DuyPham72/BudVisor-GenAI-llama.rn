@@ -14,36 +14,39 @@ const EMBEDDING_URL = 'https://www.dropbox.com/scl/fi/k52v2hvv0nb400gsw02yp/embe
 export default function SetupWelcome() {
   const [loading, setLoading] = useState(true);
   const [status, setStatus] = useState('Checking models...');
+  const [error, setError] = useState<string | null>(null);
   const router = useRouter();
 
-  useEffect(() => {
-    const checkAndInit = async () => {
-      try {
-        const modelExists = await RNFS.exists(MODEL_FILE);
-        const embeddingExists = await RNFS.exists(EMBEDDING_FILE);
+  const checkAndInit = async () => {
+    setError(null);
+    setLoading(true);
+    try {
+      const modelExists = await RNFS.exists(MODEL_FILE);
+      const embeddingExists = await RNFS.exists(EMBEDDING_FILE);
 
-        if (modelExists && embeddingExists) {
-          setStatus('Initializing LLaMA...');
-          await initModelsIfNeeded({ initializeOnly: true });
-          router.replace('./chat');
-        } else {
-          // Automatically start download if files are missing
-          setStatus('Downloading missing models...');
-          await initModelsIfNeeded({
-            modelUrl: MODEL_URL,
-            embeddingUrl: EMBEDDING_URL,
-            onProgress: (text) => setStatus(text),
-          });
-          setStatus('Initializing LLaMA...');
-          await initModelsIfNeeded({ initializeOnly: true });
-          router.replace('./chat');
-        }
-      } catch (err: any) {
-        setLoading(false);
-        Alert.alert('Setup error', err?.message || String(err));
+      if (modelExists && embeddingExists) {
+        setStatus('Initializing LLaMA...');
+        await initModelsIfNeeded({ initializeOnly: true });
+        router.replace('./chat');
+      } else {
+        setStatus('Downloading missing models...');
+        await initModelsIfNeeded({
+          modelUrl: MODEL_URL,
+          embeddingUrl: EMBEDDING_URL,
+          onProgress: (text) => setStatus(text),
+        });
+        setStatus('Initializing LLaMA...');
+        await initModelsIfNeeded({ initializeOnly: true });
+        router.replace('./chat');
       }
-    };
+    } catch (err: any) {
+      console.error(err);
+      setError(err?.message || 'Unknown error');
+      setLoading(false);
+    }
+  };
 
+  useEffect(() => {
     checkAndInit();
   }, []);
 
@@ -52,8 +55,15 @@ export default function SetupWelcome() {
       <Text style={{ fontSize: 20, marginBottom: 20, textAlign: 'center' }}>
         Welcome to the Offline Chat App!
       </Text>
-      <Text style={{ marginBottom: 10, textAlign: 'center' }}>{status}</Text>
-      {loading && <ActivityIndicator size="large" />}
+      <Text style={{ marginBottom: 10, textAlign: 'center' }}>
+        {error ? `Error: ${error}` : status}
+      </Text>
+
+      {loading && <ActivityIndicator size="large" style={{ marginVertical: 20 }} />}
+      
+      {error && !loading && (
+        <Button title="Retry Setup" onPress={checkAndInit} />
+      )}
     </View>
   );
 }
