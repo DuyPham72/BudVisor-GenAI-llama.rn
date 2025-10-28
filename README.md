@@ -3,7 +3,7 @@ A **local Small Language Model (SLM)–based AI agent** implemented with **Llama
 
 The system **integrates Retrieval-Augmented Generation (RAG)** to enhance context understanding and accuracy while maintaining **full offline operation and data privacy**.
 
-BudgetAssistant-RAG-ReactNative
+BudgetAssistant-RAG-Llama.rn
 
 ---
 
