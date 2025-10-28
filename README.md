@@ -7,3 +7,6 @@ BudgetAssistant-RAG-ReactNative
 
 ---
 
+Add data from 4 pot to the promp and use it to give advice. 
+
+EXTRA: May parse response to update the app?? 
