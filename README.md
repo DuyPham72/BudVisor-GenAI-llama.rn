@@ -11,6 +11,7 @@ BudgetAssistant-RAG-ReactNative
 - Add data from 4 catagories to the promp and use it to give advice. 
 - Print welcome message
 - Bring embedding model to assert to save time
+- Thread option for ctx (base on device core)
 
 --- 
 
