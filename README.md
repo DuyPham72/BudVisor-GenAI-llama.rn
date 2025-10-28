@@ -30,7 +30,7 @@ SELECT THE BEST
 
 ---
 
-## SAMPLE
+## SAMPLE UX/UI FOR REFERENCE
 <p align="center">
   <img src="demo/overall.png"><br/>
   <i>Overall Screen</i>
