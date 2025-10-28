@@ -29,7 +29,7 @@ export default function SetupWelcome() {
         setStatus('Initializing...');
         await initModelsIfNeeded({ initializeOnly: true });
         await clearChatMemory(); // 🧹 forget previous chat session
-        router.replace('./chat');
+        router.replace('./upload');
       } else {
         setStatus('Downloading missing components...');
         await initModelsIfNeeded({
@@ -40,7 +40,7 @@ export default function SetupWelcome() {
         setStatus('Initializing...');
         await initModelsIfNeeded({ initializeOnly: true });
         await clearChatMemory(); // 🧹 clear memory after setup
-        router.replace('./chat');
+        router.replace('./upload');
       }
     } catch (err: any) {
       console.error(err);

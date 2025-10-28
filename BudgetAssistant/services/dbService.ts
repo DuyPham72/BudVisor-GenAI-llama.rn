@@ -58,6 +58,14 @@ export async function getAllDocs() {
   return rows;
 }
 
+export async function deleteDocument(id: string) {
+    const db = await initDB();
+    await db.executeSql(
+        'DELETE FROM documents WHERE id = ?;',
+        [id]
+    );
+}
+
 // ------------------- 🧠 Chat Memory Functions -------------------
 export async function addChatMessage(role: 'user' | 'assistant', text: string) {
   const db = await initDB();
