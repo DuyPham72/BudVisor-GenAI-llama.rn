@@ -1,8 +1,8 @@
 // BudgetAssistant/services/embeddingService.ts
-import { getLlamaContext } from './llamaService';
+import { getEmbeddingContext } from './llamaService';
 
 export async function embedText(text: string): Promise<number[]> {
-  const ctx = getLlamaContext();
+  const ctx = getEmbeddingContext();
   // llama.rn returns an object; exact return shape may vary; this matches README `context.embedding(content)`
   const res = await ctx.embedding(text);
   // assume res.embedding is Float32Array or number[]

@@ -2,11 +2,12 @@
 import RNFS from 'react-native-fs';
 import { initLlama, LlamaContext } from 'llama.rn';
 
-let llamaContext: LlamaContext | null = null;
+let chatContext: LlamaContext | null = null;
+let embeddingContext: LlamaContext | null = null;
 
 const MODEL_DIR = RNFS.DocumentDirectoryPath + '/models';
-const MODEL_FILE = MODEL_DIR + '/Llama-3.2-3B-Instruct-Q4_K_M.gguf';
-const EMBEDDING_FILE = MODEL_DIR + '/embeddinggemma-300m-Q4_0.gguf';
+const MODEL_FILE = MODEL_DIR + '/granite-4.0-micro-Q4_K_M.gguf';
+const EMBEDDING_FILE = MODEL_DIR + '/embeddinggemma-300M-Q8_0.gguf';
 
 export async function initModelsIfNeeded(opts?: {
   modelUrl?: string;
@@ -31,14 +32,28 @@ export async function initModelsIfNeeded(opts?: {
     }
   }
 
-  if (!llamaContext) {
-    onProgress?.('Initializing LLaMA (this may take a while)...');
+  if (!chatContext) {
+    onProgress?.('Initializing Chat Model (this may take a while)...');
     const modelUri = 'file://' + MODEL_FILE;
 
-    llamaContext = await initLlama({
+    chatContext = await initLlama({
       model: modelUri,
       use_mlock: false, // safe for Android
       n_ctx: 2048,       // medium context
+      n_batch: 512,       // faster token generation
+      n_threads: 6,     // use 4 threads in Pixel 8
+      // embedding: true,  // embedding enabled
+    });
+  }
+
+  if (!embeddingContext) {
+    onProgress?.('Initializing Embedding Model...');
+    const embeddingModelUri = 'file://' + EMBEDDING_FILE;
+
+    embeddingContext = await initLlama({
+      model: embeddingModelUri,
+      use_mlock: false, // safe for Android
+      n_ctx: 512,       // medium context
       n_batch: 512,       // faster token generation
       n_threads: 6,     // use 4 threads in Pixel 8
       embedding: true,  // embedding enabled
@@ -81,7 +96,12 @@ async function ensureDownload(
   }
 }
 
-export function getLlamaContext() {
-  if (!llamaContext) throw new Error('LLaMA not initialized');
-  return llamaContext;
+export function getChatContext() {
+  if (!chatContext) throw new Error('Chat not initialized');
+  return chatContext;
+}
+
+export function getEmbeddingContext() {
+  if (!embeddingContext) throw new Error('Embedding not initialized');
+  return embeddingContext;
 }

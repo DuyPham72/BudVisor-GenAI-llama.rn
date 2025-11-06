@@ -6,11 +6,11 @@ import RNFS from 'react-native-fs';
 import { initModelsIfNeeded } from '../services/llamaService';
 import { clearChatMemory } from '../services/dbService';
 
-const MODEL_FILE = RNFS.DocumentDirectoryPath + '/models/Llama-3.2-3B-Instruct-Q4_K_M.gguf';
-const EMBEDDING_FILE = RNFS.DocumentDirectoryPath + '/models/embeddinggemma-300m-Q4_0.gguf';
+const MODEL_FILE = RNFS.DocumentDirectoryPath + '/models/granite-4.0-micro-Q4_K_M.gguf';
+const EMBEDDING_FILE = RNFS.DocumentDirectoryPath + '/models/embeddinggemma-300M-Q8_0.gguf';
 
-const MODEL_URL = 'https://www.dropbox.com/scl/fi/wxipr7hi36xmj37xn9hbg/Llama-3.2-3B-Instruct-Q4_K_M.gguf?rlkey=ws9qkb2mb7ual2cyjpydktw6j&st=ds5cbuqo&dl=1';
-const EMBEDDING_URL = 'https://www.dropbox.com/scl/fi/k52v2hvv0nb400gsw02yp/embeddinggemma-300m-Q4_0.gguf?rlkey=ajxtfwaic56m04qbyua357p65&st=ng4ee5lp&dl=1';
+const MODEL_URL = 'https://www.dropbox.com/scl/fi/zlz2ftlirzto2ap4r2lig/granite-4.0-micro-Q4_K_M.gguf?rlkey=fihw3zpkjicagh1l042k9i5nc&st=dnrqv2zu&dl=1';
+const EMBEDDING_URL = 'https://www.dropbox.com/scl/fi/8hvid7cowueymzimualld/embeddinggemma-300M-Q8_0.gguf?rlkey=pkwta11p8ycmsgd3oehfu9gta&st=46n4iqin&dl=1';
 
 export default function SetupWelcome() {
   const [loading, setLoading] = useState(true);

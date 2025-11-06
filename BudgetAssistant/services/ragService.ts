@@ -1,5 +1,5 @@
 // BudgetAssistant/services/ragService.ts
-import { getLlamaContext } from './llamaService';
+import { getChatContext } from './llamaService';
 import { addChatMessage, getChatHistory, getAllDocs } from './dbService';
 import { embedText } from './embeddingService';
 
@@ -39,7 +39,7 @@ export async function answerQuery(
   topK = 1,
   nPredict = 384
 ): Promise<string> {
-  const ctx = getLlamaContext();
+  const ctx = getChatContext();
 
   // ----------------------------------------------------
   // 1. PRE-RAG: HISTORY & QUERY REWRITING BLOCK 🧠

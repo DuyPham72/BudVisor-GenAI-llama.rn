@@ -1,0 +1,1119 @@
+{
+  "user_profile": {
+    "username": "kaesiwinchester",
+    "full_name": "Kaesi Winchester",
+    "customer_id": "kw52190",
+    "created_at": "2024-12-30"
+  },
+  "accounts": [
+    {
+      "account_type": "Personal Checking",
+      "account_number": "2000456789",
+      "routing_number": "111000025",
+      "account_name": "EVERYDAY CHECKING",
+      "currency": "USD",
+      "beginning_balance": 5000.00,
+      "transactions": [
+        {
+          "date_transacted": "2025-01-10",
+          "date_posted": "2025-01-11",
+          "description": "UBER TRIP HELP.UBER.COM CA 7205",
+          "amount": -48.35,
+          "balance": 4951.65
+        },
+        {
+          "date_transacted": "2025-01-11",
+          "date_posted": "2025-01-12",
+          "description": "DIRECT DEP PAYROLL AMAZON MKTPLACE 011124",
+          "amount": 3200.0,
+          "balance": 8151.65
+        },
+        {
+          "date_transacted": "2025-01-12",
+          "date_posted": "2025-01-13",
+          "description": "UBER TRIP HELP.UBER.COM CA 8189",
+          "amount": -23.29,
+          "balance": 8128.36
+        },
+        {
+          "date_transacted": "2025-01-14",
+          "date_posted": "2025-01-15",
+          "description": "WALMART SUPERCENTER #1677 ARLINGTON TX 596",
+          "amount": -60.82,
+          "balance": 8067.54
+        },
+        {
+          "date_transacted": "2025-01-18",
+          "date_posted": "2025-01-19",
+          "description": "PAYPAL *2659 REF 167",
+          "amount": -144.34,
+          "balance": 7923.2
+        },
+        {
+          "date_transacted": "2025-01-22",
+          "date_posted": "2025-01-23",
+          "description": "STARBUCKS #09994 ARLINGTON TX 1201",
+          "amount": -47.17,
+          "balance": 7876.03
+        },
+        {
+          "date_transacted": "2025-01-28",
+          "date_posted": "2025-01-29",
+          "description": "APPLE.COM/BILL 866-712-7753 CA 1603",
+          "amount": -42.29,
+          "balance": 7833.74
+        },
+        {
+          "date_transacted": "2025-02-03",
+          "date_posted": "2025-02-04",
+          "description": "SPOTIFY USA 800-123-4567 NY 6698",
+          "amount": -67.99,
+          "balance": 7765.75
+        },
+        {
+          "date_transacted": "2025-02-04",
+          "date_posted": "2025-02-05",
+          "description": "SPOTIFY USA 800-123-4567 NY 4656",
+          "amount": -149.39,
+          "balance": 7616.36
+        },
+        {
+          "date_transacted": "2025-02-11",
+          "date_posted": "2025-02-12",
+          "description": "TARGET #9084 DALLAS TX 809",
+          "amount": -120.01,
+          "balance": 7496.35
+        },
+        {
+          "date_transacted": "2025-02-15",
+          "date_posted": "2025-02-16",
+          "description": "STARBUCKS #02613 ARLINGTON TX 585",
+          "amount": -88.76,
+          "balance": 7407.59
+        },
+        {
+          "date_transacted": "2025-02-17",
+          "date_posted": "2025-02-18",
+          "description": "DIRECT DEP PAYROLL AMAZON MKTPLACE 021724",
+          "amount": 3200.0,
+          "balance": 10907.59
+        },
+        {
+          "date_transacted": "2025-02-21",
+          "date_posted": "2025-02-22",
+          "description": "CHICK-FIL-A #5343 ARLINGTON TX 632",
+          "amount": -147.7,
+          "balance": 10759.89
+        },
+        {
+          "date_transacted": "2025-02-24",
+          "date_posted": "2025-02-25",
+          "description": "CHICK-FIL-A #5657 ARLINGTON TX 442",
+          "amount": -29.14,
+          "balance": 10730.75
+        },
+        {
+          "date_transacted": "2025-03-01",
+          "date_posted": "2025-03-02",
+          "description": "CVS/PHARMACY #4269 ARLINGTON TX 212",
+          "amount": -137.8,
+          "balance": 10592.95
+        },
+        {
+          "date_transacted": "2025-03-11",
+          "date_posted": "2025-03-12",
+          "description": "DIRECT DEP PAYROLL AMAZON MKTPLACE 031124",
+          "amount": 3200.0,
+          "balance": 13792.95
+        },
+        {
+          "date_transacted": "2025-03-14",
+          "date_posted": "2025-03-15",
+          "description": "SPOTIFY USA 800-123-4567 NY 3774",
+          "amount": -95.59,
+          "balance": 13697.36
+        },
+        {
+          "date_transacted": "2025-03-15",
+          "date_posted": "2025-03-16",
+          "description": "CVS/PHARMACY #1073 ARLINGTON TX 506",
+          "amount": -45.99,
+          "balance": 13651.37
+        },
+        {
+          "date_transacted": "2025-03-18",
+          "date_posted": "2025-03-19",
+          "description": "STARBUCKS #03614 ARLINGTON TX 303",
+          "amount": -53.71,
+          "balance": 13597.66
+        },
+        {
+          "date_transacted": "2025-03-18",
+          "date_posted": "2025-03-19",
+          "description": "AMZN MKTPLACE PMTS AMZN.COM/BILL WA 3001",
+          "amount": -136.89,
+          "balance": 13460.77
+        },
+        {
+          "date_transacted": "2025-03-28",
+          "date_posted": "2025-03-29",
+          "description": "WALMART SUPERCENTER #5567 ARLINGTON TX 900",
+          "amount": -111.36,
+          "balance": 13349.41
+        },
+        {
+          "date_transacted": "2025-04-03",
+          "date_posted": "2025-04-04",
+          "description": "STARBUCKS #08759 ARLINGTON TX 919",
+          "amount": -115.58,
+          "balance": 13233.83
+        },
+        {
+          "date_transacted": "2025-04-08",
+          "date_posted": "2025-04-09",
+          "description": "STARBUCKS #01129 ARLINGTON TX 802",
+          "amount": -68.01,
+          "balance": 13165.82
+        },
+        {
+          "date_transacted": "2025-04-18",
+          "date_posted": "2025-04-19",
+          "description": "SPOTIFY USA 800-123-4567 NY 4847",
+          "amount": -11.27,
+          "balance": 13154.55
+        },
+        {
+          "date_transacted": "2025-04-18",
+          "date_posted": "2025-04-19",
+          "description": "CHICK-FIL-A #9934 ARLINGTON TX 561",
+          "amount": -21.07,
+          "balance": 13133.48
+        },
+        {
+          "date_transacted": "2025-04-20",
+          "date_posted": "2025-04-21",
+          "description": "WALMART SUPERCENTER #3605 ARLINGTON TX 468",
+          "amount": -107.64,
+          "balance": 13025.84
+        },
+        {
+          "date_transacted": "2025-04-23",
+          "date_posted": "2025-04-24",
+          "description": "DIRECT DEP PAYROLL AMAZON MKTPLACE 042324",
+          "amount": 3200.0,
+          "balance": 16225.84
+        },
+        {
+          "date_transacted": "2025-04-25",
+          "date_posted": "2025-04-26",
+          "description": "CVS/PHARMACY #5778 ARLINGTON TX 794",
+          "amount": -94.2,
+          "balance": 16131.64
+        },
+        {
+          "date_transacted": "2025-05-11",
+          "date_posted": "2025-05-12",
+          "description": "STARBUCKS #02518 ARLINGTON TX 1177",
+          "amount": -42.69,
+          "balance": 16288.95
+        },
+        {
+          "date_transacted": "2025-05-11",
+          "date_posted": "2025-05-12",
+          "description": "CVS/PHARMACY #5886 ARLINGTON TX 367",
+          "amount": -127.9,
+          "balance": 16161.05
+        },
+        {
+          "date_transacted": "2025-05-14",
+          "date_posted": "2025-05-15",
+          "description": "DIRECT DEP PAYROLL AMAZON MKTPLACE 051424",
+          "amount": 3200.0,
+          "balance": 19361.05
+        },
+        {
+          "date_transacted": "2025-05-20",
+          "date_posted": "2025-05-21",
+          "description": "WALMART SUPERCENTER #9672 ARLINGTON TX 1081",
+          "amount": -68.7,
+          "balance": 19292.35
+        },
+        {
+          "date_transacted": "2025-05-22",
+          "date_posted": "2025-05-23",
+          "description": "STARBUCKS #04069 ARLINGTON TX 384",
+          "amount": -95.42,
+          "balance": 19196.93
+        },
+        {
+          "date_transacted": "2025-05-27",
+          "date_posted": "2025-05-28",
+          "description": "AMZN MKTPLACE PMTS AMZN.COM/BILL WA 6798",
+          "amount": -83.11,
+          "balance": 19113.82
+        },
+        {
+          "date_transacted": "2025-05-27",
+          "date_posted": "2025-05-28",
+          "description": "AMZN MKTPLACE PMTS AMZN.COM/BILL WA 9370",
+          "amount": -13.35,
+          "balance": 19100.47
+        },
+        {
+          "date_transacted": "2025-06-01",
+          "date_posted": "2025-06-02",
+          "description": "CHICK-FIL-A #2948 ARLINGTON TX 363",
+          "amount": -59.57,
+          "balance": 19040.9
+        },
+        {
+          "date_transacted": "2025-06-02",
+          "date_posted": "2025-06-03",
+          "description": "PAYPAL *5289 REF 846",
+          "amount": -141.06,
+          "balance": 18899.84
+        },
+        {
+          "date_transacted": "2025-06-10",
+          "date_posted": "2025-06-11",
+          "description": "PAYPAL *1884 REF 1224",
+          "amount": -50.21,
+          "balance": 18849.63
+        },
+        {
+          "date_transacted": "2025-06-17",
+          "date_posted": "2025-06-18",
+          "description": "PAYPAL *4118 REF 185",
+          "amount": -111.26,
+          "balance": 18738.37
+        },
+        {
+          "date_transacted": "2025-06-17",
+          "date_posted": "2025-06-18",
+          "description": "SPOTIFY USA 800-123-4567 NY 5811",
+          "amount": -21.13,
+          "balance": 18717.24
+        },
+        {
+          "date_transacted": "2025-06-21",
+          "date_posted": "2025-06-22",
+          "description": "CHICK-FIL-A #2113 ARLINGTON TX 883",
+          "amount": -136.72,
+          "balance": 18580.52
+        },
+        {
+          "date_transacted": "2025-06-23",
+          "date_posted": "2025-06-24",
+          "description": "DIRECT DEP PAYROLL AMAZON MKTPLACE 062324",
+          "amount": 3200.0,
+          "balance": 21780.52
+        },
+        {
+          "date_transacted": "2025-07-12",
+          "date_posted": "2025-07-13",
+          "description": "DIRECT DEP PAYROLL AMAZON MKTPLACE 071224",
+          "amount": 3200.0,
+          "balance": 24980.52
+        },
+        {
+          "date_transacted": "2025-07-12",
+          "date_posted": "2025-07-13",
+          "description": "APPLE.COM/BILL 866-712-7753 CA 9070",
+          "amount": -119.3,
+          "balance": 24861.22
+        },
+        {
+          "date_transacted": "2025-07-13",
+          "date_posted": "2025-07-14",
+          "description": "CVS/PHARMACY #7496 ARLINGTON TX 669",
+          "amount": -92.01,
+          "balance": 24769.21
+        },
+        {
+          "date_transacted": "2025-07-15",
+          "date_posted": "2025-07-16",
+          "description": "UBER TRIP HELP.UBER.COM CA 7690",
+          "amount": -128.02,
+          "balance": 24641.19
+        },
+        {
+          "date_transacted": "2025-07-18",
+          "date_posted": "2025-07-19",
+          "description": "AMZN MKTPLACE PMTS AMZN.COM/BILL WA 6059",
+          "amount": -94.67,
+          "balance": 24546.52
+        },
+        {
+          "date_transacted": "2025-07-27",
+          "date_posted": "2025-07-28",
+          "description": "AMZN MKTPLACE PMTS AMZN.COM/BILL WA 6340",
+          "amount": -107.51,
+          "balance": 24439.01
+        },
+        {
+          "date_transacted": "2025-07-27",
+          "date_posted": "2025-07-28",
+          "description": "APPLE.COM/BILL 866-712-7753 CA 6431",
+          "amount": -38.61,
+          "balance": 24400.4
+        },
+        {
+          "date_transacted": "2025-08-02",
+          "date_posted": "2025-08-03",
+          "description": "DIRECT DEP PAYROLL AMAZON MKTPLACE 080224",
+          "amount": 3200.0,
+          "balance": 27600.4
+        },
+        {
+          "date_transacted": "2025-08-02",
+          "date_posted": "2025-08-03",
+          "description": "UBER TRIP HELP.UBER.COM CA 2098",
+          "amount": -24.41,
+          "balance": 27575.99
+        },
+        {
+          "date_transacted": "2025-08-05",
+          "date_posted": "2025-08-06",
+          "description": "CVS/PHARMACY #6270 ARLINGTON TX 491",
+          "amount": -45.18,
+          "balance": 27530.81
+        },
+        {
+          "date_transacted": "2025-08-14",
+          "date_posted": "2025-08-15",
+          "description": "TARGET #4361 DALLAS TX 109",
+          "amount": -41.64,
+          "balance": 27489.17
+        },
+        {
+          "date_transacted": "2025-08-20",
+          "date_posted": "2025-08-21",
+          "description": "PAYPAL *5278 REF 972",
+          "amount": -125.77,
+          "balance": 27363.4
+        },
+        {
+          "date_transacted": "2025-08-20",
+          "date_posted": "2025-08-21",
+          "description": "WALMART SUPERCENTER #9319 ARLINGTON TX 1220",
+          "amount": -30.43,
+          "balance": 27332.97
+        },
+        {
+          "date_transacted": "2025-08-28",
+          "date_posted": "2025-08-29",
+          "description": "SPOTIFY USA 800-123-4567 NY 7763",
+          "amount": -6.72,
+          "balance": 27626.25
+        },
+        {
+          "date_transacted": "2025-09-14",
+          "date_posted": "2025-09-15",
+          "description": "CVS/PHARMACY #1148 ARLINGTON TX 942",
+          "amount": -147.45,
+          "balance": 27478.8
+        },
+        {
+          "date_transacted": "2025-09-14",
+          "date_posted": "2025-09-15",
+          "description": "UBER TRIP HELP.UBER.COM CA 3449",
+          "amount": -66.24,
+          "balance": 27412.56
+        },
+        {
+          "date_transacted": "2025-09-14",
+          "date_posted": "2025-09-15",
+          "description": "AMZN MKTPLACE PMTS AMZN.COM/BILL WA 4285",
+          "amount": -32.24,
+          "balance": 27380.32
+        },
+        {
+          "date_transacted": "2025-09-17",
+          "date_posted": "2025-09-18",
+          "description": "DIRECT DEP PAYROLL AMAZON MKTPLACE 091724",
+          "amount": 3200.0,
+          "balance": 30580.32
+        },
+        {
+          "date_transacted": "2025-09-20",
+          "date_posted": "2025-09-21",
+          "description": "PAYPAL *6915 REF 191",
+          "amount": -33.59,
+          "balance": 30546.73
+        },
+        {
+          "date_transacted": "2025-09-23",
+          "date_posted": "2025-09-24",
+          "description": "TARGET #4915 DALLAS TX 266",
+          "amount": -31.61,
+          "balance": 30515.12
+        },
+        {
+          "date_transacted": "2025-09-24",
+          "date_posted": "2025-09-25",
+          "description": "TARGET #8842 DALLAS TX 936",
+          "amount": -141.26,
+          "balance": 30373.86
+        },
+        {
+          "date_transacted": "2025-10-03",
+          "date_posted": "2025-10-04",
+          "description": "DIRECT DEP PAYROLL AMAZON MKTPLACE 100324",
+          "amount": 3200.0,
+          "balance": 33573.86
+        },
+        {
+          "date_transacted": "2025-10-11",
+          "date_posted": "2025-10-12",
+          "description": "APPLE.COM/BILL 866-712-7753 CA 2653",
+          "amount": -112.02,
+          "balance": 33461.84
+        },
+        {
+          "date_transacted": "2025-10-11",
+          "date_posted": "2025-10-12",
+          "description": "AMZN MKTPLACE PMTS AMZN.COM/BILL WA 6119",
+          "amount": -18.24,
+          "balance": 33443.6
+        },
+        {
+          "date_transacted": "2025-10-15",
+          "date_posted": "2025-10-16",
+          "description": "WALMART SUPERCENTER #8476 ARLINGTON TX 112",
+          "amount": -54.99,
+          "balance": 33388.61
+        },
+        {
+          "date_transacted": "2025-10-18",
+          "date_posted": "2025-10-19",
+          "description": "AMZN MKTPLACE PMTS AMZN.COM/BILL WA 3102",
+          "amount": -129.22,
+          "balance": 33259.39
+        },
+        {
+          "date_transacted": "2025-10-24",
+          "date_posted": "2025-10-25",
+          "description": "WALMART SUPERCENTER #1035 ARLINGTON TX 304",
+          "amount": -37.1,
+          "balance": 33222.29
+        },
+        {
+          "date_transacted": "2025-10-24",
+          "date_posted": "2025-10-25",
+          "description": "STARBUCKS #07667 ARLINGTON TX 1072",
+          "amount": -126.41,
+          "balance": 33095.88
+        }
+      ]
+    },
+    {
+      "account_type": "Personal Savings",
+      "account_number": "3000678910",
+      "routing_number": "111000025",
+      "account_name": "HIGH YIELD SAVINGS",
+      "currency": "USD",
+      "beginning_balance": 10000.00,
+      "transactions": [
+        {
+          "date_transacted": "2025-01-01",
+          "date_posted": "2025-01-01",
+          "description": "MONTHLY INTEREST CREDIT 0.35% APY",
+          "amount": 3.00,
+          "balance": 10003.00
+        },
+        {
+          "date_transacted": "2025-02-01",
+          "date_posted": "2025-02-01",
+          "description": "MONTHLY INTEREST CREDIT 0.35% APY",
+          "amount": 3.0,
+          "balance": 10006.0
+        },
+        {
+          "date_transacted": "2025-02-16",
+          "date_posted": "2025-02-17",
+          "description": "ONLINE TRANSFER TO CHECKING CONF# 663568",
+          "amount": -300,
+          "balance": 9736.06
+        },
+        {
+          "date_transacted": "2025-03-01",
+          "date_posted": "2025-03-01",
+          "description": "MONTHLY INTEREST CREDIT 0.35% APY",
+          "amount": 3.0,
+          "balance": 10009.0
+        },
+        {
+          "date_transacted": "2025-04-01",
+          "date_posted": "2025-04-01",
+          "description": "MONTHLY INTEREST CREDIT 0.35% APY",
+          "amount": 3.0,
+          "balance": 10012.0
+        },
+        {
+          "date_transacted": "2025-05-01",
+          "date_posted": "2025-05-01",
+          "description": "MONTHLY INTEREST CREDIT 0.35% APY",
+          "amount": 3.0,
+          "balance": 10015.0
+        },
+        {
+          "date_transacted": "2025-05-07",
+          "date_posted": "2025-05-08",
+          "description": "ONLINE TRANSFER TO CHECKING CONF# 127934",
+          "amount": -200,
+          "balance": 9536.06
+        },
+        {
+          "date_transacted": "2025-06-01",
+          "date_posted": "2025-06-01",
+          "description": "MONTHLY INTEREST CREDIT 0.35% APY",
+          "amount": 3.0,
+          "balance": 10018.0
+        },
+        {
+          "date_transacted": "2025-07-01",
+          "date_posted": "2025-07-01",
+          "description": "MONTHLY INTEREST CREDIT 0.35% APY",
+          "amount": 3.01,
+          "balance": 10021.01
+        },
+        {
+          "date_transacted": "2025-08-01",
+          "date_posted": "2025-08-01",
+          "description": "MONTHLY INTEREST CREDIT 0.35% APY",
+          "amount": 3.01,
+          "balance": 10024.02
+        },
+        {
+          "date_transacted": "2025-08-27",
+          "date_posted": "2025-08-28",
+          "description": "ONLINE TRANSFER TO CHECKING CONF# 126133",
+          "amount": -300,
+          "balance": 9236.06
+        },
+        {
+          "date_transacted": "2025-09-01",
+          "date_posted": "2025-09-01",
+          "description": "MONTHLY INTEREST CREDIT 0.35% APY",
+          "amount": 3.01,
+          "balance": 10027.03
+        },
+        {
+          "date_transacted": "2025-10-01",
+          "date_posted": "2025-10-01",
+          "description": "MONTHLY INTEREST CREDIT 0.35% APY",
+          "amount": 3.01,
+          "balance": 10030.04
+        }
+      ]
+    },
+    {
+      "account_type": "Credit Card",
+      "account_number": "445812349002",
+      "card_network": "VISA",
+      "account_name": "CASH REWARDS CREDIT",
+      "credit_limit": 5000.0,
+      "beginning_balance": 0.00,
+      "currency": "USD",
+      "transactions": [
+        {
+          "date_transacted": "2025-01-05",
+          "date_posted": "2025-01-06",
+          "description": "CVS/PHARMACY #2337 ARLINGTON TX 245",
+          "amount": 95.89,
+          "balance": 95.89
+        },
+        {
+          "date_transacted": "2025-01-09",
+          "date_posted": "2025-01-10",
+          "description": "UBER TRIP HELP.UBER.COM CA 9850",
+          "amount": 110.43,
+          "balance": 206.32
+        },
+        {
+          "date_transacted": "2025-01-09",
+          "date_posted": "2025-01-10",
+          "description": "ITADARAKI RAMEN 682-123-4567 TX 76001",
+          "amount": 92.39,
+          "balance": 298.71
+        },
+        {
+          "date_transacted": "2025-01-10",
+          "date_posted": "2025-01-11",
+          "description": "WALMART SUPERCENTER #9109 S COOPER ARLINGTON TX 910",
+          "amount": 62.13,
+          "balance": 360.84
+        },
+        {
+          "date_transacted": "2025-01-11",
+          "date_posted": "2025-01-12",
+          "description": "UBER TRIP HELP.UBER.COM CA 4108",
+          "amount": 29.14,
+          "balance": 389.98
+        },
+        {
+          "date_transacted": "2025-01-12",
+          "date_posted": "2025-01-13",
+          "description": "CVS/PHARMACY #4728 ARLINGTON TX 332",
+          "amount": 83.7,
+          "balance": 473.68
+        },
+        {
+          "date_transacted": "2025-01-13",
+          "date_posted": "2025-01-14",
+          "description": "NINJA RAMEN #5737 S COOPER ARLINGTON TX 1023",
+          "amount": 48.1,
+          "balance": 521.78
+        },
+        {
+          "date_transacted": "2025-01-13",
+          "date_posted": "2025-01-14",
+          "description": "PAYPAL *8102 REF 341",
+          "amount": 86.2,
+          "balance": 607.98
+        },
+        {
+          "date_transacted": "2025-01-15",
+          "date_posted": "2025-01-16",
+          "description": "CHICK-FIL-A #5514 ARLINGTON TX 871",
+          "amount": 24.35,
+          "balance": 632.33
+        },
+        {
+          "date_transacted": "2025-01-16",
+          "date_posted": "2025-01-17",
+          "description": "APPLE.COM/BILL 866-712-7753 CA 3772",
+          "amount": 127.26,
+          "balance": 759.59
+        },
+        {
+          "date_transacted": "2025-01-17",
+          "date_posted": "2025-01-18",
+          "description": "WALMART SUPERCENTER #3599 ARLINGTON TX 582",
+          "amount": 41.57,
+          "balance": 801.16
+        },
+        {
+          "date_transacted": "2025-01-17",
+          "date_posted": "2025-01-18",
+          "description": "ONLINE PAYMENT FROM CHECKING XXXX6789 CONF# 807245",
+          "amount": -341.51,
+          "balance": 459.65
+        },
+        {
+          "date_transacted": "2025-01-19",
+          "date_posted": "2025-01-20",
+          "description": "SPOTIFY USA 800-123-4567 NY 6211",
+          "amount": 88.86,
+          "balance": 548.51
+        },
+        {
+          "date_transacted": "2025-01-21",
+          "date_posted": "2025-01-22",
+          "description": "DUTCH BROS #04471 ARLINGTON TX 574",
+          "amount": 40.46,
+          "balance": 588.97
+        },
+        {
+          "date_transacted": "2025-01-22",
+          "date_posted": "2025-01-23",
+          "description": "GUITAR CENTER USA 469-123-4567 CEDAR HILL 2687",
+          "amount": 526.82,
+          "balance": 1115.79
+        },
+        {
+          "date_transacted": "2025-01-22",
+          "date_posted": "2025-01-23",
+          "description": "CVS/PHARMACY #9834 ARLINGTON TX 367",
+          "amount": 33.36,
+          "balance": 1149.15
+        },
+        {
+          "date_transacted": "2025-01-23",
+          "date_posted": "2025-01-24",
+          "description": "STARBUCKS #03480 ARLINGTON TX 895",
+          "amount": 10.33,
+          "balance": 1159.48
+        },
+        {
+          "date_transacted": "2025-01-23",
+          "date_posted": "2025-01-24",
+          "description": "TARGET #2900 DALLAS TX 756",
+          "amount": 147.79,
+          "balance": 1307.27
+        },
+        {
+          "date_transacted": "2025-01-27",
+          "date_posted": "2025-01-28",
+          "description": "SEPHORA #2733 PARK MALL TX 2267",
+          "amount": 130.94,
+          "balance": 1438.21
+        },
+        {
+          "date_transacted": "2025-02-02",
+          "date_posted": "2025-02-03",
+          "description": "PAYPAL *8926 REF 630",
+          "amount": 50.8,
+          "balance": 1489.01
+        },
+        {
+          "date_transacted": "2025-02-04",
+          "date_posted": "2025-02-05",
+          "description": "APPLE.COM/BILL 866-712-7753 CA 2830",
+          "amount": 69.82,
+          "balance": 1558.83
+        },
+        {
+          "date_transacted": "2025-02-06",
+          "date_posted": "2025-02-07",
+          "description": "MUSIC HALL #0267 DALLAS TX 72301",
+          "amount": 125.64,
+          "balance": 1684.47
+        },
+        {
+          "date_transacted": "2025-02-08",
+          "date_posted": "2025-02-09",
+          "description": "WALMART SUPERCENTER #9480 ARLINGTON TX 838",
+          "amount": 38.92,
+          "balance": 1723.39
+        },
+        {
+          "date_transacted": "2025-02-19",
+          "date_posted": "2025-02-20",
+          "description": "STARBUCKS #05516 ARLINGTON TX 523",
+          "amount": 47.39,
+          "balance": 1770.78
+        },
+        {
+          "date_transacted": "2025-02-25",
+          "date_posted": "2025-02-26",
+          "description": "PAYPAL *7268 REF 271",
+          "amount": 88.83,
+          "balance": 1859.61
+        },
+        {
+          "date_transacted": "2025-02-27",
+          "date_posted": "2025-02-28",
+          "description": "UBER TRIP HELP.UBER.COM CA 3837",
+          "amount": 39.63,
+          "balance": 1899.24
+        },
+        {
+          "date_transacted": "2025-03-02",
+          "date_posted": "2025-03-03",
+          "description": "AMZN MKTPLACE PMTS AMZN.COM/BILL WA 9328",
+          "amount": 41.14,
+          "balance": 1940.38
+        },
+        {
+          "date_transacted": "2025-03-02",
+          "date_posted": "2025-03-03",
+          "description": "TARGET #2449 DALLAS TX 1003",
+          "amount": 117.89,
+          "balance": 2058.27
+        },
+        {
+          "date_transacted": "2025-03-09",
+          "date_posted": "2025-03-10",
+          "description": "STARBUCKS #06327 ARLINGTON TX 115",
+          "amount": 23.71,
+          "balance": 2081.98
+        },
+        {
+          "date_transacted": "2025-03-10",
+          "date_posted": "2025-03-11",
+          "description": "CHICK-FIL-A #3493 ARLINGTON TX 938",
+          "amount": 15.46,
+          "balance": 2097.44
+        },
+        {
+          "date_transacted": "2025-03-12",
+          "date_posted": "2025-03-13",
+          "description": "UBER TRIP HELP.UBER.COM CA 6100",
+          "amount": 49.31,
+          "balance": 2146.75
+        },
+        {
+          "date_transacted": "2025-03-20",
+          "date_posted": "2025-03-21",
+          "description": "WALMART SUPERCENTER #7820 ARLINGTON TX 1065",
+          "amount": 98.11,
+          "balance": 2244.86
+        },
+        {
+          "date_transacted": "2025-03-22",
+          "date_posted": "2025-03-23",
+          "description": "WALGREEN #6468 ARLINGTON TX 925",
+          "amount": 10.04,
+          "balance": 2254.90
+        },
+        {
+          "date_transacted": "2025-03-26",
+          "date_posted": "2025-03-27",
+          "description": "LYFT TRIP HELP.LYFT.COM CA 7299",
+          "amount": 95.24,
+          "balance": 2350.14
+        },
+        {
+          "date_transacted": "2025-04-04",
+          "date_posted": "2025-04-05",
+          "description": "DUTCH BROS #03890 DALLAS TX 928",
+          "amount": 32.74,
+          "balance": 2382.88
+        },
+        {
+          "date_transacted": "2025-04-09",
+          "date_posted": "2025-04-10",
+          "description": "TEMU PMTS TEMU.COM/BILL CA 9105",
+          "amount": 135.38,
+          "balance": 2518.26
+        },
+        {
+          "date_transacted": "2025-04-11",
+          "date_posted": "2025-04-12",
+          "description": "DING TEA #08392 GRAND PRAIRIE TX 1019",
+          "amount": 42.06,
+          "balance": 2560.32
+        },
+        {
+          "date_transacted": "2025-04-13",
+          "date_posted": "2025-04-14",
+          "description": "HOME DEPOT #5588 FT WORTH TX 1049",
+          "amount": 148.85,
+          "balance": 2709.17
+        },
+        {
+          "date_transacted": "2025-04-16",
+          "date_posted": "2025-04-17",
+          "description": "SYSTEM76 PYMNT *7809 REF 789",
+          "amount": 27.67,
+          "balance": 2736.84
+        },
+        {
+          "date_transacted": "2025-04-21",
+          "date_posted": "2025-04-22",
+          "description": "LYFT TRIP HELP.LYFT.COM CA 4921",
+          "amount": 21.83,
+          "balance": 2758.67
+        },
+        {
+          "date_transacted": "2025-04-25",
+          "date_posted": "2025-04-26",
+          "description": "SONY USA 800-123-4567 NY 8496",
+          "amount": 258.24,
+          "balance": 3016.91
+        },
+        {
+          "date_transacted": "2025-05-03",
+          "date_posted": "2025-05-04",
+          "description": "KEYCHRON KEYBOARD REF#1730 PYMNT 2712",
+          "amount": 127.82,
+          "balance": 3144.73
+        },
+        {
+          "date_transacted": "2025-05-10",
+          "date_posted": "2025-05-11",
+          "description": "AMZN MKTPLACE PMTS AMZN.COM/BILL WA 1965",
+          "amount": 43.29,
+          "balance": 3188.02
+        },
+        {
+          "date_transacted": "2025-05-13",
+          "date_posted": "2025-05-14",
+          "description": "NINJA RAMEN #5737 S COOPER ARLINGTON TX 1023",
+          "amount": 53.19,
+          "balance": 3241.21
+        },
+        {
+          "date_transacted": "2025-05-17",
+          "date_posted": "2025-05-18",
+          "description": "PARK MALL #2894 ARLINGTON TX 1104",
+          "amount": 14.65,
+          "balance": 3255.86
+        },
+        {
+          "date_transacted": "2025-05-20",
+          "date_posted": "2025-05-21",
+          "description": "TARGET #3764 DALLAS TX 123",
+          "amount": 72.56,
+          "balance": 3328.42
+        },
+        {
+          "date_transacted": "2025-05-22",
+          "date_posted": "2025-05-23",
+          "description": "UBER TRIP HELP.UBER.COM CA 8957",
+          "amount": 35.67,
+          "balance": 3364.09
+        },
+        {
+          "date_transacted": "2025-05-26",
+          "date_posted": "2025-05-27",
+          "description": "GONGCHA #4820 GRAND PRAIRIE TX 051",
+          "amount": 14.49,
+          "balance": 3378.58
+        },
+        {
+          "date_transacted": "2025-06-02",
+          "date_posted": "2025-06-03",
+          "description": "AMZN MKTPLACE PMTS AMZN.COM/BILL WA 8519",
+          "amount": 56.97,
+          "balance": 3435.55
+        },
+        {
+          "date_transacted": "2025-06-02",
+          "date_posted": "2025-06-03",
+          "description": "MARSHALL #8625 IRVING TX 153",
+          "amount": 42.14,
+          "balance": 3477.69
+        },
+        {
+          "date_transacted": "2025-06-07",
+          "date_posted": "2025-06-08",
+          "description": "TARGET #3252 DALLAS TX 170",
+          "amount": 11.89,
+          "balance": 3489.58
+        },
+        {
+          "date_transacted": "2025-06-13",
+          "date_posted": "2025-06-14",
+          "description": "SHEIN EPAY SHEIN.COM/ WA 1937",
+          "amount": 42.48,
+          "balance": 3532.06
+        },
+        {
+          "date_transacted": "2025-06-23",
+          "date_posted": "2025-06-24",
+          "description": "JOLIBEE #2957 ARLINGTON TX 116O",
+          "amount": 12.73,
+          "balance": 3544.79
+        },
+        {
+          "date_transacted": "2025-07-02",
+          "date_posted": "2025-07-03",
+          "description": "BASKET ROBINS #6852 ARLINGTON TX 823",
+          "amount": 8.29,
+          "balance": 3553.08
+        },
+        {
+          "date_transacted": "2025-07-08",
+          "date_posted": "2025-07-09",
+          "description": "SPOTIFY USA 800-123-4567 NY 9281",
+          "amount": 5.42,
+          "balance": 3558.50
+        },
+        {
+          "date_transacted": "2025-07-10",
+          "date_posted": "2025-07-11",
+          "description": "EXPEDIA EPAY BOOKING #2957 HOTEL CA 464",
+          "amount": 108.34,
+          "balance": 3666.84
+        },
+        {
+          "date_transacted": "2025-07-27",
+          "date_posted": "2025-07-28",
+          "description": "STARBUCKS #01855 ARLINGTON TX 379",
+          "amount": 7.25,
+          "balance": 3674.09
+        },
+        {
+          "date_transacted": "2025-07-28",
+          "date_posted": "2025-07-29",
+          "description": "SONIC #4928 GRAPEVINE TX 186",
+          "amount": 23.68,
+          "balance": 3697.77
+        },
+        {
+          "date_transacted": "2025-08-01",
+          "date_posted": "2025-08-02",
+          "description": "UBER TRIP HELP.UBER.COM CA 7100",
+          "amount": 28.88,
+          "balance": 3726.65
+        },
+        {
+          "date_transacted": "2025-08-07",
+          "date_posted": "2025-08-08",
+          "description": "ALDI #2759 KENNEDALE TX 762",
+          "amount": 30.74,
+          "balance": 3757.39
+        },
+        {
+          "date_transacted": "2025-08-12",
+          "date_posted": "2025-08-13",
+          "description": "MCDONALD #3047 GRAND PRAIRIE TX 447",
+          "amount": 16.78,
+          "balance": 3774.17
+        },
+        {
+          "date_transacted": "2025-08-17",
+          "date_posted": "2025-08-18",
+          "description": "SPOTIFY USA 800-123-4567 NY 7042",
+          "amount": 5.42,
+          "balance": 3779.59
+        },
+        {
+          "date_transacted": "2025-08-21",
+          "date_posted": "2025-08-22",
+          "description": "AUTOZONE #4167 ARLINGTON TX 595",
+          "amount": 44.56,
+          "balance": 3824.15
+        },
+        {
+          "date_transacted": "2025-08-27",
+          "date_posted": "2025-08-28",
+          "description": "JIFFY LUBE GOGL PAY GOOGLE.COM/BILL CA 1654",
+          "amount": 104.67,
+          "balance": 3928.82
+        },
+        {
+          "date_transacted": "2025-09-09",
+          "date_posted": "2025-09-10",
+          "description": "AMC THEATER #06779 PARK MALL TX 102",
+          "amount": 15.02,
+          "balance": 3943.84
+        },
+        {
+          "date_transacted": "2025-09-21",
+          "date_posted": "2025-09-22",
+          "description": "PAYPAL *5973 REF 138",
+          "amount": 7.79,
+          "balance": 3951.63
+        },
+        {
+          "date_transacted": "2025-10-01",
+          "date_posted": "2025-10-02",
+          "description": "UBER TRIP HELP.UBER.COM CA 7635",
+          "amount": 27.66,
+          "balance": 3979.29
+        },
+        {
+          "date_transacted": "2025-10-16",
+          "date_posted": "2025-10-17",
+          "description": "OWALA.COM/BILL 682-712-4923 TX 3026",
+          "amount": 32.49,
+          "balance": 4011.78
+        },
+        {
+          "date_transacted": "2025-10-16",
+          "date_posted": "2025-10-17",
+          "description": "TARGET #5302 DALLAS TX 218",
+          "amount": 107.81,
+          "balance": 4119.59
+        },
+        {
+          "date_transacted": "2025-10-24",
+          "date_posted": "2025-10-25",
+          "description": "CIRCLE K USA 800-123-4567 TX 9642",
+          "amount": 12.37,
+          "balance": 4131.96
+        },
+        {
+          "date_transacted": "2025-10-28",
+          "date_posted": "2025-10-29",
+          "description": "GUITAR CENTER USA 469-123-4567 CEDAR HILL 2687",
+          "amount": 31.80,
+          "balance": 4163.76
+        }
+      ]
+    }
+  ]
+}
