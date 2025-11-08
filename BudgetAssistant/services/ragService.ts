@@ -39,6 +39,8 @@ export async function answerQuery(
   nPredict = 256
 ): Promise<string> {
 
+  const t0 = Date.now();  //Overall start time
+  console.log(`PRE-RAG: HISTORY & QUERY REWRITING BLOCK`);
   // ----------------------------------------------------
   // 1. PRE-RAG: HISTORY & QUERY REWRITING BLOCK 🧠
   // ----------------------------------------------------
@@ -50,6 +52,9 @@ export async function answerQuery(
   let retrievalQuery = query;
   const vagueWords = /\b(that|this|it|those|these|him|her|them|that one|those ones)\b/i;
   const isVague = vagueWords.test(query) || query.length < 25;
+
+  const t1_rewrite = Date.now(); // ⏱️ ADD THIS LINE
+  console.log(`History Retrieve: ${t1_rewrite - t0}ms`);
 
   // ONLY rewrite if history exists AND the query is vague
   if (history.length > 0 && isVague) {
@@ -102,14 +107,22 @@ Rewritten Question: `;
     }
   }
 
+  const t2_rewrite = Date.now(); // ⏱️ ADD THIS
+  console.log(`Query Rewrite: ${t2_rewrite - t1_rewrite}ms`);
+
+  console.log(`RETRIEVAL-AUGMENTATION BLOCK`);
   // ----------------------------------------------------
   // 2. RETRIEVAL-AUGMENTATION BLOCK
   // ----------------------------------------------------
 
   // Step 1: Embed the query (using rewritten query if applicable)
-  const queryEmbedding = await embedText(retrievalQuery);
+  const t1_embed = Date.now(); // ⏱️ ADD THIS
+  const queryEmbedding = await embedText(retrievalQuery);
+  const t2_embed = Date.now(); // ⏱️ ADD THIS
+  console.log(`Query Embedding: ${t2_embed - t1_embed}ms`);
 
   // Step 2: Retrieve all stored documents (chunks)
+  const t1_search = Date.now(); // ⏱️ ADD THIS
   const allDocs: Document[] = await getAllDocs();
 
   // Step 3: Calculate similarity and select top K
@@ -121,23 +134,28 @@ Rewritten Question: `;
     .sort((a, b) => b.score - a.score)
     .slice(0, topK);
 
+  const t2_search = Date.now(); // ⏱️ ADD THIS
+  console.log(`DB Search & Score: ${t2_search - t1_search}ms`);
+
   // Step 4: Format the retrieved context for the prompt
   const contextText = scored
     .map((d, i) => `[Source Chunk ${i + 1} (Score: ${d.score.toFixed(3)}):\n${d.text.slice(0, 1000)}]`) 
     .join('\n---\n');
 
+  console.log(`PROMPT AUGMENTATION & COMPLETION BLOCK`);
   // ----------------------------------------------------
   // 3. PROMPT AUGMENTATION & COMPLETION BLOCK
   // ----------------------------------------------------
 
   // Step 1: Define system instructions
+  const t0_prompt = Date.now();
   const systemInstruction = `
 You are CornBot, a financial analyst. Provide practical, data-driven insights.
-Rules: Be concise, analytical, and round floats to 2 decimals. Answer in 250 words or less.
+Rules: Be concise, analytical, and round floats to 2 decimals.
 Format:
-- **Summary**: [brief summary]
-- **Details**: [numbers, details]
-- **Recommendation**: [advice]
+  - **Summary**: [brief summary]  \n\n
+  - **Details**: [numbers, details] \n\n
+  - **Recommendation**: [advice]
 `;
 
   // Step 2: Format the chat history
@@ -157,17 +175,23 @@ User question: ${query}
 
   // Step 4: FIX: Inject System Instruction ONLY if this is the FIRST turn.
   const userContent = history.length === 0 
-    ? `${systemInstruction}\n\n${augmentedQuery}`
-    : augmentedQuery;
+    ? `${systemInstruction}\n\n${augmentedQuery}`
+    : augmentedQuery;
 
   // Step 5: Combine everything into the final prompt string.
   const prompt = `<bos>${formattedHistory}<start_of_turn>user\n${userContent}<end_of_turn><start_of_turn>model
 `;
 
+  const t1_prompt = Date.now();
+  console.log(`Main Completion: ${t1_prompt - t0_prompt}ms`);
+
+  console.log(`LLM COMPLETION BLOCK`);
   // ----------------------------------------------------------
   // 4. LLM COMPLETION BLOCK
   // ----------------------------------------------------------
 
+  const t1_completion = Date.now(); // ⏱️ ADD THIS
+  let t_first_token = 0;
   let buffer = '';
   const flushTokenCount = 1;
   let tokenCounter = 0;
@@ -188,6 +212,13 @@ User question: ${query}
       },
       (data) => {
         if (!data?.token) return;
+
+        // ⏱️ ADD THIS IF-BLOCK ⬇️
+        if (t_first_token === 0) {
+          t_first_token = Date.now();
+          console.log(`Time to First Token: ${t_first_token - t1_completion}ms`);
+        }
+
         buffer += data.token;
         tokenCounter++;
         if (tokenCounter >= flushTokenCount) {
@@ -201,6 +232,9 @@ User question: ${query}
     console.error("LLM completion failed:", error);
     return "Error: Could not get a response from the model.";
   }
+
+  const t2_completion = Date.now(); // ⏱️ ADD THIS
+  console.log(`Main Completion: ${t2_completion - t1_completion}ms`);
 
   if (buffer.length > 0) onPartial?.(buffer);
 
@@ -217,6 +251,9 @@ User question: ${query}
   // Save chat history
   await addChatMessage('user', query);
   await addChatMessage('assistant', reply);
+
+  const t_end = Date.now(); // ⏱️ ADD THIS
+  console.log(`[--- TOTAL TIME: ${t_end - t0}ms ---`); // ⏱️ ADD THIS
 
   return reply;
 }

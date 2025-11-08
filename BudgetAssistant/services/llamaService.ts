@@ -7,9 +7,9 @@ let chatContext: LlamaContext | null = null;
 let embeddingContext: LlamaContext | null = null;
 
 const MODEL_DIR = RNFS.DocumentDirectoryPath + '/models';
-const REWRITE_MODEL_FILE = MODEL_DIR + '/granite-4.0-1b-Q4_K_M.gguf';
-const MODEL_FILE = MODEL_DIR + '/granite-4.0-micro-Q4_K_M.gguf';
-const EMBEDDING_FILE = MODEL_DIR + '/nomic-embed-text-v1.5.Q4_K_M.gguf';
+const REWRITE_MODEL_FILE = MODEL_DIR + '/granite-4.0-350m-Q8_0.gguf';
+const MODEL_FILE = MODEL_DIR + '/granite-4.0-1b-Q8_0.gguf';
+const EMBEDDING_FILE = MODEL_DIR + '/embeddinggemma-300M-Q8_0.gguf';
 
 export async function initModelsIfNeeded(opts?: {
   rewriteModelUrl?: string;
@@ -41,7 +41,7 @@ export async function initModelsIfNeeded(opts?: {
   }
 
   if (!chatContext) {
-    onProgress?.('Initializing Chat Model (this may take a while)...');
+    onProgress?.('Initializing The App (this may take a while)...');
     const modelUri = 'file://' + MODEL_FILE;
 
     chatContext = await initLlama({
@@ -54,7 +54,7 @@ export async function initModelsIfNeeded(opts?: {
   }
 
   if (!embeddingContext) {
-    onProgress?.('Initializing Embedding Model...');
+    onProgress?.('Initializing Components...');
     const embeddingModelUri = 'file://' + EMBEDDING_FILE;
 
     embeddingContext = await initLlama({
@@ -68,7 +68,7 @@ export async function initModelsIfNeeded(opts?: {
   }
 
   if (!rewriterContext) {
-    onProgress?.('Initializing Rewriter Model...');
+    onProgress?.('Initializing Services...');
     const rewriterModelUri = 'file://' + REWRITE_MODEL_FILE;
 
     rewriterContext = await initLlama({

@@ -7,13 +7,13 @@ import { initModelsIfNeeded } from '../services/llamaService';
 import { clearChatMemory } from '../services/dbService';
 import { ingestInitialDataIfNeeded } from '../services/dataIngestionService';
 
-const REWRITE_MODEL_FILE = RNFS.DocumentDirectoryPath + '/models/granite-4.0-1b-Q4_K_M.gguf';
-const MODEL_FILE = RNFS.DocumentDirectoryPath + '/models/granite-4.0-micro-Q4_K_M.gguf';
-const EMBEDDING_FILE = RNFS.DocumentDirectoryPath + '/models/nomic-embed-text-v1.5.Q4_K_M.gguf';
+const REWRITE_MODEL_FILE = RNFS.DocumentDirectoryPath + '/models/granite-4.0-350m-Q8_0.gguf';
+const MODEL_FILE = RNFS.DocumentDirectoryPath + '/models/granite-4.0-1b-Q8_0.gguf';
+const EMBEDDING_FILE = RNFS.DocumentDirectoryPath + '/models/embeddinggemma-300M-Q8_0.gguf';
 
-const REWRITE_MODEL_URL = 'https://www.dropbox.com/scl/fi/hwm6kxtxmnm1x0zt1jge3/granite-4.0-1b-Q4_K_M.gguf?rlkey=2i5t2i60p451fh4n0z0x6k9qp&st=g5hqgua1&dl=1';
-const MODEL_URL = 'https://www.dropbox.com/scl/fi/zlz2ftlirzto2ap4r2lig/granite-4.0-micro-Q4_K_M.gguf?rlkey=fihw3zpkjicagh1l042k9i5nc&st=dnrqv2zu&dl=1';
-const EMBEDDING_URL = 'https://www.dropbox.com/scl/fi/faf0p70wll19dsei24wfn/nomic-embed-text-v1.5.Q4_K_M.gguf?rlkey=1ridq6tv9r56dgrfgj6rfdelm&st=inklelqr&dl=1';
+const REWRITE_MODEL_URL = 'https://huggingface.co/unsloth/granite-4.0-350m-GGUF/resolve/main/granite-4.0-350m-Q8_0.gguf';
+const MODEL_URL = 'https://huggingface.co/unsloth/granite-4.0-1b-GGUF/resolve/main/granite-4.0-1b-Q8_0.gguf';
+const EMBEDDING_URL = 'https://huggingface.co/unsloth/embeddinggemma-300m-GGUF/resolve/main/embeddinggemma-300M-Q8_0.gguf';
 
 export default function SetupWelcome() {
   const [loading, setLoading] = useState(true);
@@ -83,7 +83,7 @@ export default function SetupWelcome() {
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', padding: 20 }}>
       <Text style={{ fontSize: 20, marginBottom: 20, textAlign: 'center' }}>
-        Welcome to the Offline Chat App!
+        Welcome to the Offline Budget AI Agent!
       </Text>
       <Text style={{ marginBottom: 10, textAlign: 'center' }}>
         {error ? `Error: ${error}` : status}

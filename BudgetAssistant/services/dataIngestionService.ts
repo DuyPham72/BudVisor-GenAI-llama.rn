@@ -84,7 +84,7 @@ async function getChunksFromProfile(): Promise<string[]> {
               year: 'numeric',
             });
             // 3. Use fields from kaesi.json
-            return `On ${formattedDate}: ${t.description}, Amount: $${t.amount.toFixed(2)}, Balance: $${t.balance.toFixed(2)}`;
+            return `On ${formattedDate}: ${t.description}, Amount: $${t.amount.toFixed(2)}, Updated Balance: $${t.balance.toFixed(2)}`;
           }
         )
         .join('\n');
