@@ -9,14 +9,11 @@ BudgetAssistant-RAG-Llama.rn
 
 ## FUTURE IMPROVE FOR CHATBOT
 - Add data from 4 catagories to the promp and use it to give advice. 
-- Print welcome message
-- Bring embedding model to assert to save time
 
 ---
 
 ## EXTRA: 
 - May parse response to update the catagories and pie chart??
-- Add sugessions
 
 ---
 
