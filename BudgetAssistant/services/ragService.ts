@@ -32,7 +32,7 @@ function cosine(a: number[], b: number[]): number {
 export async function answerQuery(
   query: string,
   onPartial?: (chunk: string) => void,
-  topK = 2,
+  topK = 1,
   nPredict = 384
 ): Promise<string> {
   // Log start time
@@ -131,11 +131,13 @@ Rewritten Question: `;
   const allDocs: Document[] = await getAllDocs();
 
   // Step 3: Calculate similarity and select top K
+  const threshold = 0.4;
   const scored = allDocs
     .map((doc) => ({ 
         ...doc, 
         score: cosine(queryEmbedding, doc.embedding) 
     }))
+    .filter(doc => doc.score >= threshold)
     .sort((a, b) => b.score - a.score)
     .slice(0, topK);
 
@@ -164,9 +166,9 @@ Rewritten Question: `;
 You are CornBot, a financial analyst. Provide practical, data-driven insights.
 Rules: Be concise, analytical, and round floats to 2 decimals.
 Format:
-  **Summary**: \n[brief summary]  \n\n
-  **Details**: \n[numbers, details] \n\n
-  **Recommendation**: \n[advice]
+**Summary**: \n[brief summary]  \n\n
+**Details**: \n[numbers, details] \n\n
+**Recommendation**: \n[advice]
 `;
 
   // Step 2: Format the chat history
@@ -181,7 +183,7 @@ FINANCIAL CONTEXT:
 ---
 ${contextText || "No relevant financial documents found in the database. Rely only on general financial knowledge."}
 ---
-User question: ${query}
+${query}
 `;
 
   // Step 4: FIX: Inject System Instruction ONLY if this is the FIRST turn.
@@ -214,7 +216,7 @@ User question: ${query}
         n_predict: nPredict,
         top_p: 0.95,
         top_k: 64,
-        temperature: 0.3,
+        temperature: 0.5,
         min_p: 0.02,
         stop: stopWords, 
       },
