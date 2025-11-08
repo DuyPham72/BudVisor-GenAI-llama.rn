@@ -14,10 +14,13 @@ interface Message {
   role: 'user' | 'assistant';
 }
 
+//Define the animation states
+const thinkingStates = ['Thinking', 'Thinking.', 'Thinking..', 'Thinking...'];
+
 export default function Chat() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [isGenerating, setIsGenerating] = useState(false);
-  const [stopped, setStopped] = useState(true); // initially true, user can send
+  const [stopped, setStopped] = useState(true);
 
   const messagesRef = useRef<Message[]>([]);
   const streamingRefs = useRef<Record<string, string>>({});
@@ -56,13 +59,41 @@ export default function Chat() {
     });
   }, []);
 
+  // Animation effect for "Thinking..." message
+  useEffect(() => {
+    if (isGenerating) {
+      // If we are generating, start an interval
+      let stateIndex = 0;
+      const interval = setInterval(() => {
+        // Find the last message
+        const lastMessage = messagesRef.current[messagesRef.current.length - 1];
+
+        // Check if it's an assistant message and its text is one of our "thinking" states
+        if (lastMessage && lastMessage.role === 'assistant' && thinkingStates.includes(lastMessage.text)) {
+          // It is. Update its text to the next state in the loop.
+          stateIndex = (stateIndex + 1) % thinkingStates.length;
+          updateMessageText(lastMessage.id, thinkingStates[stateIndex]);
+        }
+      }, 500); // Loop every 500ms
+
+      // The cleanup function will run when isGenerating becomes false
+      return () => clearInterval(interval);
+    }
+  }, [isGenerating]);
+
   // Stream updates every 50ms, but now we only update the message that changed
   useEffect(() => {
     const interval = setInterval(() => {
       Object.entries(streamingRefs.current).forEach(([id, text]) => {
         const existing = messagesRef.current.find((m) => m.id === id);
         if (existing && existing.text !== text) {
-          updateMessageText(id, text);
+          // Skip this update, let the animation run
+          if (text === '' && thinkingStates.includes(existing.text)) {
+            return; 
+          }
+          else {
+            updateMessageText(id, text);
+          }
         }
       });
     }, 50);
@@ -113,7 +144,7 @@ export default function Chat() {
 
     const assistantId = generateId();
     streamingRefs.current[assistantId] = '';
-    addMessage({ id: assistantId, text: 'Thinking...', role: 'assistant' });
+    addMessage({ id: assistantId, text: 'Thinking', role: 'assistant' });
 
     shouldStopRef.current = false;
     setIsGenerating(true);

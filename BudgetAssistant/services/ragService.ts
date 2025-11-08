@@ -33,7 +33,7 @@ export async function answerQuery(
   query: string,
   onPartial?: (chunk: string) => void,
   topK = 2,
-  nPredict = 256
+  nPredict = 384
 ): Promise<string> {
   // Log start time
   const t0 = Date.now();
@@ -142,6 +142,12 @@ Rewritten Question: `;
   // Log step 2 time
   const t2_search = Date.now(); // ⏱️ ADD THIS
   console.log(`DB Search & Score: ${t2_search - t1_search}ms`);
+
+  // Log score of retrieved docs
+  console.log(`[RAG DEBUG] Top ${topK} doc scores (before filtering):`);
+  scored.forEach((doc, i) => {
+    console.log(`  Rank ${i + 1}: Score ${doc.score.toFixed(4)}, Text: "${doc.text.slice(0, 50)}..."`);
+  });
 
   // Step 4: Format the retrieved context for the prompt
   const contextText = scored
