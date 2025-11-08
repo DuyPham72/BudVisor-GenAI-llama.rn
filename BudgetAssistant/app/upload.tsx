@@ -17,7 +17,7 @@ interface Document {
     chunkCount: number; 
 }
 
-// --- Text Extraction (Fix Applied) ---
+// --- Text Extraction ---
 async function extractTextFromFile(
   uri: string,
   fileName: string,
@@ -33,7 +33,7 @@ async function extractTextFromFile(
   }
 
   try {
-    // ⬇️ Using the legacy function
+    // Using the legacy function
     const text = await readAsStringAsync(uri, { encoding: 'utf8' });
 
     if (text.length < 10) {
@@ -43,84 +43,12 @@ async function extractTextFromFile(
   } catch (err: any) {
     console.error('Error extracting text:', err);
     throw new Error(
-      `Failed to extract text from ${fileName}. The file might be encrypted, image-based, or corrupted.`,
+      `Failed to extract text from ${fileName}.`,
     );
   }
 }
 
-// --- "Smart Chunker" for your specific JSON file ---
-function getChunksFromProfile(jsonText: string): string[] {
-  const data = JSON.parse(jsonText);
-  const chunks: string[] = [];
-
-  chunks.push(
-    `User Profile: Full Name: ${data.user_profile.full_name}, Username: ${data.user_profile.username}, Customer ID: ${data.user_profile.customer_id}, Member Since: ${data.user_profile.created_at}`
-  );
-
-  for (const account of data.accounts) {
-    chunks.push(
-      `Account Summary: Type: ${account.account_type}, Name: ${
-        account.account_name
-      }, Number (last 4): ${account.account_number.slice(-4)}, Currency: ${
-        account.currency
-      }. ${
-        account.beginning_balance
-          ? `Beginning Balance: $${account.beginning_balance}`
-          : ''
-      } ${
-        account.credit_limit ? `Credit Limit: $${account.credit_limit}` : ''
-      }`
-    );
-
-    const monthlyTransactions: { [key: string]: any[] } = {};
-    if (account.transactions) {
-      for (const trans of account.transactions) {
-        // NOTE: This assumes 'date_posted' is the field in the manual upload
-        // If your manual file uses 'date_transacted' like kaesi.json, change this line.
-        const dateField = trans.date_posted || trans.date_transacted;
-        
-        const month = new Date(dateField + 'T12:00:00').toLocaleString('default', {
-          month: 'long',
-          year: 'numeric',
-        });
-        if (!monthlyTransactions[month]) {
-          monthlyTransactions[month] = [];
-        }
-        monthlyTransactions[month].push(trans);
-      }
-    }
-
-    for (const [month, transactions] of Object.entries(monthlyTransactions)) {
-      
-      // ✅ NEW: Reformat dates inside the chunk
-      const transactionStrings = transactions
-        .map(
-          (t) => {
-            const dateField = t.date_posted || t.date_transacted;
-            // 1. Safe parsing of YYYY-MM-DD
-            const date = new Date(dateField + 'T12:00:00');
-            // 2. Format to "October 3, 2025"
-            const formattedDate = date.toLocaleString('default', {
-              month: 'long',
-              day: 'numeric',
-              year: 'numeric',
-            });
-            // 3. Use fields from the JSON
-            return `On ${formattedDate}: ${t.description}, Amount: $${t.amount.toFixed(2)}, Balance: $${t.balance.toFixed(2)}`;
-          }
-        )
-        .join('\n');
-
-      // ✅ FIXED: Title is also month-first
-      chunks.push(
-        `${month} Transaction History for ${account.account_name} (${account.account_type}):\n${transactionStrings}`
-      );
-    }
-  }
-  return chunks;
-}
-
-// --- "Simple Chunker" for other files (PDF, TXT) ---
+// --- "Simple Chunker" for files (PDF, TXT) ---
 function splitTextIntoChunks(text: string, chunkSize = 512): string[] {
   const chunks: string[] = [];
   for (let i = 0; i < text.length; i += chunkSize) {
@@ -191,7 +119,7 @@ export default function UploadScreen() {
 
     try {
       const result = await DocumentPicker.getDocumentAsync({
-        type: ['application/pdf', 'text/plain', 'application/json'],
+        type: ['application/pdf', 'text/plain'],
         copyToCacheDirectory: true,
       });
 
@@ -209,15 +137,9 @@ export default function UploadScreen() {
       const text = await extractTextFromFile(fileUri, fileName);
       let chunks: string[] = [];
 
-      // Check if the file is our specific bank profile
-      if (fileName.toLowerCase().includes('bank_profile_2025.json')) {
-        setStatus('Parsing smart bank profile...');
-        chunks = getChunksFromProfile(text);
-      } else {
-        // Fallback for generic PDF/TXT files
-        setStatus(`Splitting ${text.length} characters into chunks...`);
-        chunks = splitTextIntoChunks(text);
-      }
+      // Use simple chunker for PDF and TXT
+      setStatus(`Splitting ${text.length} characters into chunks...`);
+      chunks = splitTextIntoChunks(text);
 
       if (chunks.length === 0) {
         setStatus('Error: No text chunks created.');
@@ -328,7 +250,7 @@ export default function UploadScreen() {
           </View>
         ) : (
           <Button
-            title="Select Document (PDF, TXT, JSON)"
+            title="Select Document (PDF, TXT)"
             onPress={handleUpload}
             color="#007AFF"
           />

@@ -1,18 +1,18 @@
 // BudgetAssistant/app/index.tsx
 import React, { useState, useEffect } from 'react';
-import { View, Text, Button, ActivityIndicator, Alert, StyleSheet } from 'react-native';
+import { View, Text, Button, ActivityIndicator } from 'react-native';
 import { useRouter } from 'expo-router';
 import RNFS from 'react-native-fs';
 import { initModelsIfNeeded } from '../services/llamaService';
 import { clearChatMemory } from '../services/dbService';
 import { ingestInitialDataIfNeeded } from '../services/dataIngestionService';
 
-const REWRITE_MODEL_FILE = RNFS.DocumentDirectoryPath + '/models/granite-4.0-350m-Q8_0.gguf';
-const MODEL_FILE = RNFS.DocumentDirectoryPath + '/models/granite-4.0-1b-Q8_0.gguf';
+const REWRITE_MODEL_FILE = RNFS.DocumentDirectoryPath + '/models/granite-4.0-h-350m-Q8_0.gguf';
+const MODEL_FILE = RNFS.DocumentDirectoryPath + '/models/granite-4.0-h-1b-Q8_0.gguf';
 const EMBEDDING_FILE = RNFS.DocumentDirectoryPath + '/models/embeddinggemma-300M-Q8_0.gguf';
 
-const REWRITE_MODEL_URL = 'https://huggingface.co/unsloth/granite-4.0-350m-GGUF/resolve/main/granite-4.0-350m-Q8_0.gguf';
-const MODEL_URL = 'https://huggingface.co/unsloth/granite-4.0-1b-GGUF/resolve/main/granite-4.0-1b-Q8_0.gguf';
+const REWRITE_MODEL_URL = 'https://huggingface.co/unsloth/granite-4.0-h-350m-GGUF/resolve/main/granite-4.0-h-350m-Q8_0.gguf';
+const MODEL_URL = 'https://huggingface.co/unsloth/granite-4.0-h-1b-GGUF/resolve/main/granite-4.0-h-1b-Q8_0.gguf';
 const EMBEDDING_URL = 'https://huggingface.co/unsloth/embeddinggemma-300m-GGUF/resolve/main/embeddinggemma-300M-Q8_0.gguf';
 
 export default function SetupWelcome() {
@@ -44,13 +44,13 @@ export default function SetupWelcome() {
       const modelExists = await RNFS.exists(MODEL_FILE);
       const embeddingExists = await RNFS.exists(EMBEDDING_FILE);
 
-      // We always want to init models, even if they exist
+      // 1. We always want to init models, even if they exist
       if (modelExists && embeddingExists && rewriteModelExists) {
         setStatus('Initializing models...');
         await initModelsIfNeeded({ initializeOnly: true, onProgress: handleProgress });
       } else {
         setStatus('Downloading missing components...');
-        // ⬇️ UPDATE THIS OBJECT ⬇️
+
         await initModelsIfNeeded({
           rewriteModelUrl: REWRITE_MODEL_URL,
           modelUrl: MODEL_URL,
@@ -61,11 +61,10 @@ export default function SetupWelcome() {
         await initModelsIfNeeded({ initializeOnly: true, onProgress: handleProgress });
       }
 
-      // ⬅️ 2. NEW STEP: Ingest initial data
-      // This will only run once, on the first-ever app start
+      // 2. Ingest initial data (This will only run once, on the first-ever app start)
       await ingestInitialDataIfNeeded(setStatus);
 
-      // ⬅️ 3. Clear old chats and navigate
+      // 3. Clear old chats and navigate
       await clearChatMemory(); 
       router.replace('./upload');
 

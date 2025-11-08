@@ -6,10 +6,7 @@ import { Platform } from 'react-native';
 const INITIAL_DATA_FLAG = 'initial_data_ingested_v1';
 const JSON_FILE_PATH = 'data/kaesi.json'; // Path within native 'assets'
 
-/**
- * Reads a file from the app's native asset folder.
- * ⬇️ MODIFIED TO RETURN NULL ON FAILURE ⬇️
- */
+// Reads a file from the app's bundled assets
 async function readAssetFile(filePath: string): Promise<string | null> {
   try {
     if (Platform.OS === 'android') {
@@ -21,25 +18,21 @@ async function readAssetFile(filePath: string): Promise<string | null> {
       return await RNFS.readFile(path, 'utf8');
     }
   } catch (e: any) {
-    // ⚠️ CHANGED: Log a warning instead of throwing an error
+    // Log a warning instead of throwing an error
     console.warn(
       `Optional asset file not found: ${filePath}. This is safe to ignore if you haven't added it yet.`,
     );
-    return null; // ⬅️ RETURN NULL ON FAILURE
+    return null; // RETURN NULL ON FAILURE
   }
 }
 
-/**
- * Loads the JSON and processes it into smart, logical text chunks.
- * ⬇️ MODIFIED TO RETURN NULL ON FAILURE ⬇️
- * (This is the function with your date-formatting logic)
- */
+// Loads the JSON and processes it into smart, logical text chunks.
 async function getChunksFromProfile(): Promise<string[] | null> {
   const fileContent = await readAssetFile(JSON_FILE_PATH);
 
-  // ⬇️ ADDED THIS CHECK ⬇️
+  // If file wasn't found, stop and return null
   if (fileContent === null) {
-    return null; // If file wasn't found, stop and return null
+    return null; 
   }
 
   const data = JSON.parse(fileContent);
@@ -58,10 +51,9 @@ async function getChunksFromProfile(): Promise<string[] | null> {
 
     const monthlyTransactions: { [key: string]: any[] } = {};
 
-    // Safety check for transactions array
+    // Safety check for transactions array (use date_transacted)
     if (Array.isArray(account.transactions)) {
       for (const trans of account.transactions) {
-        // Use 'date_transacted'
         const month = new Date(
           trans.date_transacted + 'T12:00:00',
         ).toLocaleString('default', {
@@ -98,7 +90,7 @@ async function getChunksFromProfile(): Promise<string[] | null> {
       // Title is also month-first
       chunks.push(
         `${month} Transaction History for ${account.account_name}:\n${transactionStrings}`,
-      ); // ✅ FIXED: Removed the stray 'Z' from here
+      );
     }
   } else {
     throw new Error("JSON file is missing the required 'accounts' object.");
@@ -107,14 +99,10 @@ async function getChunksFromProfile(): Promise<string[] | null> {
   return chunks;
 }
 
-/**
- * Main service function to check if data is loaded, and if not, load it.
- * ⬇️ MODIFIED TO SKIP IF FILE NOT FOUND ⬇️
- */
+// Main service function to check if data is loaded, and if not, load it.
 export async function ingestInitialDataIfNeeded(
   onProgress: (status: string) => void,
 ) {
-  // ✅ FIXED: Re-structured the try/catch block
   try {
     // 1. Check if we've already done this
     const isIngested = await getFlag(INITIAL_DATA_FLAG);
@@ -123,17 +111,16 @@ export async function ingestInitialDataIfNeeded(
       return;
     }
 
-    onProgress('Checking for bank profile...'); // ⬅️ Changed status
+    onProgress('Checking for bank profile...');
 
     // 2. Get the logical text chunks
     const chunks = await getChunksFromProfile();
 
-    // ⬇️ ADDED THIS CHECK ⬇️
-    // This is the "skip" logic you wanted
+    // Note: If no file found, skip ingestion
     if (chunks === null) {
       onProgress('No initial bank profile found. Skipping.');
       console.log('No kaesi.json found in assets, skipping initial data ingestion.');
-      return; // ⬅️ Gracefully exit the function
+      return;
     }
 
     if (!chunks || chunks.length === 0) {

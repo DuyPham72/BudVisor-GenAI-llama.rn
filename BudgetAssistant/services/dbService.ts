@@ -8,20 +8,15 @@ const generateUuid = generateId;
 
 let dbPromise: Promise<any> | null = null;
 
-/**
- * Gets the database connection.
- * This function is now a singleton that also handles ALL table initialization.
- * This ensures table creation only runs ONCE and prevents race conditions.
- */
+// ------------------- Database Initialization -------------------
 function getDB() {
   if (!dbPromise) {
-    // This promise now represents the *entire initialization process*
     dbPromise = (async () => {
       try {
         const db = await SQLite.openDatabase({ name: DB_NAME, location: 'default' });
         console.log('Database opened...');
 
-        // Run all table creations here, once.
+        // Run all table creations once.
         await db.executeSql(`CREATE TABLE IF NOT EXISTS documents (
           id TEXT PRIMARY KEY,
           text TEXT,
@@ -51,17 +46,14 @@ function getDB() {
   return dbPromise;
 }
 
-/**
- * Simple alias for getDB() to ensure DB is initialized.
- * All other functions will just call getDB() directly.
- */
+// ------------------- Database Call Function -------------------
 export async function initDB() {
   return await getDB();
 }
 
 // ------------------- Document (RAG) Functions -------------------
 export async function addDocument(text: string, embedding: number[]) {
-  const db = await getDB(); // ⬅️ CHANGED
+  const db = await getDB();
   const id = await generateUuid();
   await db.executeSql(
     'INSERT INTO documents (id, text, embedding) VALUES (?,?,?);',
@@ -70,8 +62,9 @@ export async function addDocument(text: string, embedding: number[]) {
   return id;
 }
 
+// ----------------- Get All Available Documents -----------------
 export async function getAllDocs() {
-  const db = await getDB(); // ⬅️ CHANGED
+  const db = await getDB();
   const [res] = await db.executeSql(
     'SELECT id, text, embedding FROM documents ORDER BY rowid DESC;'
   );
@@ -84,16 +77,16 @@ export async function getAllDocs() {
 }
 
 export async function deleteDocument(id: string) {
-    const db = await getDB(); // ⬅️ CHANGED
+    const db = await getDB();
     await db.executeSql(
         'DELETE FROM documents WHERE id = ?;',
         [id]
     );
 }
 
-// ------------------- 🧠 Chat Memory Functions -------------------
+// ------------------- Chat Memory Functions -------------------
 export async function addChatMessage(role: 'user' | 'assistant', text: string) {
-  const db = await getDB(); // ⬅️ CHANGED
+  const db = await getDB();
   const id = await generateUuid();
   await db.executeSql(
     'INSERT INTO chat_memory (id, role, text) VALUES (?,?,?);',
@@ -101,8 +94,9 @@ export async function addChatMessage(role: 'user' | 'assistant', text: string) {
   );
 }
 
+// ------------------- Retrieve Chat History -------------------
 export async function getChatHistory(limit = 10) {
-  const db = await getDB(); // ⬅️ CHANGED
+  const db = await getDB();
   const [res] = await db.executeSql(
     'SELECT role, text FROM chat_memory ORDER BY rowid ASC LIMIT ?;',
     [limit]
@@ -113,18 +107,16 @@ export async function getChatHistory(limit = 10) {
 }
 
 export async function clearChatMemory() {
-  const db = await getDB(); // ⬅️ CHANGED
+  const db = await getDB();
   await db.executeSql('DELETE FROM chat_memory;');
 }
 
 
 // ------------------- 🚩 App State Flag Functions -------------------
 
-/**
- * Gets the value of a flag from the app_state table.
- */
+// Gets the value of a flag from the app_state table.
 export async function getFlag(key: string): Promise<string | null> {
-  const db = await getDB(); // ⬅️ CHANGED
+  const db = await getDB();
   const [res] = await db.executeSql(
     'SELECT value FROM app_state WHERE key = ?;',
     [key]
@@ -135,23 +127,16 @@ export async function getFlag(key: string): Promise<string | null> {
   return null;
 }
 
-/**
- * Sets or updates a flag in the app_state table.
- */
+// Sets or updates a flag in the app_state table.
 export async function setFlag(key: string, value: string) {
-  const db = await getDB(); // ⬅️ CHANGED
-  // "INSERT OR REPLACE" is a handy SQLite command (UPSERT)
+  const db = await getDB();
   await db.executeSql(
     'INSERT OR REPLACE INTO app_state (key, value) VALUES (?, ?);',
     [key, value]
   );
 }
 
-// ------------------- 🚩 Clear All Rag documents -------------------
-/**
- * Clears all RAG documents and all app state flags.
- * This will force a full re-ingestion on next app start.
- */
+// ------------------- Clear All Rag documents -------------------
 export async function resetRAGDatabase() {
   const db = await getDB();
   await db.executeSql('DELETE FROM documents;');

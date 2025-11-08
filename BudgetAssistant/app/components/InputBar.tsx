@@ -6,7 +6,7 @@ interface InputBarProps {
   onSend: (text: string) => void;
   onStop: () => void;
   isGenerating: boolean;
-  stopped: boolean; // new prop
+  stopped: boolean;
 }
 
 const InputBar = forwardRef<RNTextInput, InputBarProps>(

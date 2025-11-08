@@ -25,13 +25,13 @@ export default function Chat() {
   const inputRef = useRef<RNTextInput>(null);
   const flatListRef = useRef<FlatList>(null);
 
-  // ✅ Adds message while preserving the existing reference as much as possible
+  // Adds message while preserving the existing reference as much as possible
   const addMessage = (msg: Message) => {
     messagesRef.current = [...messagesRef.current, msg];
     setMessages([...messagesRef.current]);
   };
 
-  // ✅ Only updates the text of one message — keeps array reference stable
+  // Only updates the text of one message — keeps array reference stable
   const updateMessageText = (id: string, newText: string) => {
     setMessages((prev) => {
       let updated = false;
@@ -47,7 +47,16 @@ export default function Chat() {
     });
   };
 
-  // ✅ Stream updates every 50ms, but now we only update the message that changed
+  // Initial greeting message from assistant
+  useEffect(() => {
+    addMessage({
+      id: generateId(),
+      text: "Hi, I'm your personal finance assistant. How can I help you today?",
+      role: 'assistant',
+    });
+  }, []);
+
+  // Stream updates every 50ms, but now we only update the message that changed
   useEffect(() => {
     const interval = setInterval(() => {
       Object.entries(streamingRefs.current).forEach(([id, text]) => {
@@ -61,7 +70,7 @@ export default function Chat() {
     return () => clearInterval(interval);
   }, []);
 
-  // ✅ Smooth auto-scroll when new message arrives or updates
+  // Smooth auto-scroll when new message arrives or updates
   useEffect(() => {
     if (messages.length > 0) {
       const timeout = setTimeout(() => {
@@ -71,7 +80,7 @@ export default function Chat() {
     }
   }, [messages]);
 
-  // ✅ Clear chat memory on unmount
+  // Clear chat memory on unmount
   useEffect(() => {
     return () => {
       console.log('Leaving chat screen, clearing chat memory...');
@@ -114,7 +123,7 @@ export default function Chat() {
         if (shouldStopRef.current) return;
         streamingRefs.current[assistantId] += partial;
 
-        // ✅ check if "[Stopped]" appears and update stopped flag
+        // check if "[Stopped]" appears and update stopped flag
         if (streamingRefs.current[assistantId].includes(' [Stopped]')) {
           setStopped(true); // re-enable Send button immediately
         }
@@ -134,7 +143,6 @@ export default function Chat() {
     }
   };
 
-  // streamingRefs.current[assistantId] += ' [Stopped]';
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
       <KeyboardAvoidingView

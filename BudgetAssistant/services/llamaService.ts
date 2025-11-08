@@ -6,11 +6,13 @@ let rewriterContext: LlamaContext | null = null;
 let chatContext: LlamaContext | null = null;
 let embeddingContext: LlamaContext | null = null;
 
+// -------------------------- Model File Paths --------------------------
 const MODEL_DIR = RNFS.DocumentDirectoryPath + '/models';
 const REWRITE_MODEL_FILE = MODEL_DIR + '/granite-4.0-350m-Q8_0.gguf';
-const MODEL_FILE = MODEL_DIR + '/granite-4.0-1b-Q8_0.gguf';
+const MODEL_FILE = MODEL_DIR + '/granite-4.0-h-1b-Q8_0.gguf';
 const EMBEDDING_FILE = MODEL_DIR + '/embeddinggemma-300M-Q8_0.gguf';
 
+// ------------------- Small LLM Model Initialization -------------------
 export async function initModelsIfNeeded(opts?: {
   rewriteModelUrl?: string;
   modelUrl?: string;
@@ -46,10 +48,10 @@ export async function initModelsIfNeeded(opts?: {
 
     chatContext = await initLlama({
       model: modelUri,
-      use_mlock: false, // safe for Android
-      n_ctx: 2048,       // medium context
-      n_batch: 512,       // faster token generation
-      n_threads: 6,     // use 4 threads in Pixel 8
+      use_mlock: false,   // turn off mlock for Android
+      n_ctx: 2048,        // medium context
+      n_batch: 512,       // process 512 tokens at a time
+      n_threads: 6,       // use 6 threads
     });
   }
 
@@ -59,11 +61,11 @@ export async function initModelsIfNeeded(opts?: {
 
     embeddingContext = await initLlama({
       model: embeddingModelUri,
-      use_mlock: false, // safe for Android
-      n_ctx: 2048,       // medium context
-      n_batch: 512,       // faster token generation
-      n_threads: 6,     // use 4 threads in Pixel 8
-      embedding: true,  // embedding enabled
+      use_mlock: false,   // turn off mlock for Android
+      n_ctx: 2048,        // medium context
+      n_batch: 512,       // process 512 tokens at a time
+      n_threads: 6,       // use 6 threads
+      embedding: true,    // embedding enabled
     });
   }
 
@@ -74,15 +76,16 @@ export async function initModelsIfNeeded(opts?: {
     rewriterContext = await initLlama({
       model: rewriterModelUri,
       use_mlock: false, 
-      n_ctx: 1024,      // Smaller context, as it only rewrites
-      n_batch: 512,
-      n_threads: 6,     // Fewer threads, as it's a simple task
+      n_ctx: 1024,      // smaller context
+      n_batch: 512,     // process 512 tokens at a time
+      n_threads: 6,     // use 6 threads
     });
   }
 
   return true;
 }
 
+// ----------------- Download Check Function ------------------
 async function ensureDownload(
   url: string,
   dest: string,
