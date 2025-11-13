@@ -7,7 +7,7 @@ The system also integrates Retrieval-Augmented Generation (RAG) to **enhance con
 
 ---
 
-## Features
+## Project Features
 
 1. **Financial Reasoning on Device** – Runs locally using **llama.rn**, optimized for mobile performance.
 2. **RAG-based Understanding** – Integrates document retrieval to enhance context comprehension of financial data.
