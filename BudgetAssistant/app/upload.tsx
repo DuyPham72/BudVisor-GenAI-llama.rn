@@ -1,17 +1,13 @@
-// BudgetAssistant/app/upload.tsx
 import React, { useState, useCallback } from 'react';
-import { View, Text, Button, Alert, TouchableOpacity, ActivityIndicator, FlatList, StyleSheet } from 'react-native';
+import {  View, Text, Button, Alert, TouchableOpacity, ActivityIndicator, FlatList, StyleSheet, ScrollView } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import * as DocumentPicker from 'expo-document-picker';
 import { readAsStringAsync } from 'expo-file-system/legacy';
-import { useRouter, useFocusEffect } from 'expo-router';
+import { useFocusEffect, useNavigation } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
+
 import { embedText } from '../services/embeddingService';
 import { addDocument, getAllDocs, deleteDocument, resetRAGDatabase } from '../services/dbService';
-
-interface UploadScreenProps {
-  onBack: () => void;
-  onOpenMenu: () => void;
-}
 
 // --- Type Definitions for Documents ---
 interface Document {
@@ -22,72 +18,11 @@ interface Document {
   chunkCount: number;
 }
 
-// --- JSON Profile Parser (from ingestInitialDataIfNeeded) ---
-async function parseKaesiJson(jsonContent: string): Promise<string[]> {
-  const data = JSON.parse(jsonContent);
-  const chunks: string[] = [];
-
-  if (data.user_profile) {
-    chunks.push(
-      `User Profile: Full Name: ${data.user_profile.full_name}, Member Since: ${data.user_profile.created_at}`,
-    );
-  }
-
-  if (data.accounts) {
-    const account = data.accounts;
-    const monthlyTransactions: { [key: string]: any[] } = {};
-
-    if (Array.isArray(account.transactions)) {
-      for (const trans of account.transactions) {
-        const month = new Date(trans.date_transacted + 'T12:00:00').toLocaleString('default', {
-          month: 'long',
-          year: 'numeric',
-        });
-        if (!monthlyTransactions[month]) monthlyTransactions[month] = [];
-        monthlyTransactions[month].push(trans);
-      }
-    }
-
-    for (const [month, transactions] of Object.entries(monthlyTransactions)) {
-      const transactionStrings = transactions
-        .map((t) => {
-          const date = new Date(t.date_transacted + 'T12:00:00');
-          const formattedDate = date.toLocaleString('default', {
-            month: 'long',
-            day: 'numeric',
-            year: 'numeric',
-          });
-          return `On ${formattedDate}: ${t.description}, Amount: $${t.amount.toFixed(
-            2,
-          )}, Balance: $${t.balance.toFixed(2)}`;
-        })
-        .join('\n');
-      chunks.push(`${month} Transaction History for ${account.account_name}:\n${transactionStrings}`);
-    }
-  } else {
-    throw new Error("JSON file is missing the required 'accounts' object.");
-  }
-
-  return chunks;
-}
-
-// --- Text Extraction ---
+// --- Text Extraction (SIMPLIFIED) ---
 async function extractTextFromFile(uri: string, fileName: string): Promise<string> {
-  const isPDF = fileName.toLowerCase().endsWith('.pdf');
-  const isJSON = fileName.toLowerCase().endsWith('.json');
-
-  if (isPDF) {
-    Alert.alert(
-      'PDF Note',
-      'PDF extraction is highly unreliable in Expo. TXT/JSON is recommended for accuracy.',
-      [{ text: 'OK' }],
-    );
-  }
-
   try {
     const text = await readAsStringAsync(uri, { encoding: 'utf8' });
-
-    if (text.length < 10) throw new Error('File content is too short or empty after reading.');
+    if (text.length < 1) throw new Error('File content is empty.');
     return text;
   } catch (err: any) {
     console.error('Error extracting text:', err);
@@ -95,32 +30,49 @@ async function extractTextFromFile(uri: string, fileName: string): Promise<strin
   }
 }
 
-// --- Simple Chunker (for PDF/TXT) ---
-function splitTextIntoChunks(text: string, chunkSize = 512): string[] {
+// --- Chunker groups lines by empty lines ---
+function splitTextByEmptyLines(text: string): string[] {
+  const lines = text.split('\n');
   const chunks: string[] = [];
-  for (let i = 0; i < text.length; i += chunkSize) {
-    chunks.push(text.slice(i, i + chunkSize));
-  }
-  return chunks.filter((chunk) => chunk.trim().length > 0);
+  let currentChunk: string[] = [];
+
+  lines.forEach((line, index) => {
+    const trimmedLine = line.trim();
+    if (trimmedLine.length > 0) {
+      currentChunk.push(line); 
+    } else {
+      if (currentChunk.length > 0) {
+        chunks.push(currentChunk.join('\n'));
+        currentChunk = []; 
+      }
+    }
+    if (index === lines.length - 1) {
+      if (currentChunk.length > 0) {
+        chunks.push(currentChunk.join('\n'));
+      }
+    }
+  });
+  return chunks;
 }
 
 // --- Main Screen Component ---
-const UploadScreen: React.FC<UploadScreenProps> = ({ onBack, onOpenMenu }) => {
+const UploadScreen = () => {
   const [uploading, setUploading] = useState(false);
   const [status, setStatus] = useState<string>('Ready to select document.');
   const [documents, setDocuments] = useState<Document[]>([]);
-  const router = useRouter();
+  
+  const navigation = useNavigation(); 
 
   // --- Load all documents ---
   const loadDocuments = async () => {
     try {
       const rawDocs = await getAllDocs();
-      const displayedDocs: Document[] = rawDocs.map((doc) => ({
+      const displayedDocs: Document[] = rawDocs.map((doc: any) => ({
         id: doc.id,
         text: doc.text,
         embedding: doc.embedding,
         summary: doc.text.substring(0, 50).trim() + '...',
-        chunkCount: 1,
+        chunkCount: 1, 
       }));
       setDocuments(displayedDocs);
     } catch (e) {
@@ -154,14 +106,14 @@ const UploadScreen: React.FC<UploadScreenProps> = ({ onBack, onOpenMenu }) => {
     }, []),
   );
 
-  // --- Upload Handler ---
+  // --- Upload Handler (SIMPLIFIED) ---
   const handleUpload = async () => {
     setUploading(true);
     setStatus('Selecting file...');
 
     try {
       const result = await DocumentPicker.getDocumentAsync({
-        type: ['application/pdf', 'text/plain', 'application/json'],
+        type: 'text/plain', 
         copyToCacheDirectory: true,
       });
 
@@ -178,14 +130,8 @@ const UploadScreen: React.FC<UploadScreenProps> = ({ onBack, onOpenMenu }) => {
       setStatus(`Processing: ${fileName}...`);
       const text = await extractTextFromFile(fileUri, fileName);
 
-      let chunks: string[] = [];
-      if (fileName.toLowerCase().endsWith('.json')) {
-        setStatus('Parsing JSON data...');
-        chunks = await parseKaesiJson(text);
-      } else {
-        setStatus(`Splitting ${text.length} characters into chunks...`);
-        chunks = splitTextIntoChunks(text);
-      }
+      setStatus(`Splitting text into line-based chunks...`);
+      const chunks = splitTextByEmptyLines(text); 
 
       if (chunks.length === 0) {
         setStatus('Error: No text chunks created.');
@@ -217,17 +163,17 @@ const UploadScreen: React.FC<UploadScreenProps> = ({ onBack, onOpenMenu }) => {
   // --- Reset Database Handler ---
   const handleResetRAG = async () => {
     Alert.alert(
-      'Confirm Delete',
-      'This will clear all manually uploaded chunks and reload the base profile on restart.',
+      'Confirm Delete All', // Changed title
+      'Are you sure you want to delete ALL processed RAG chunks?', // Changed message
       [
         { text: 'Cancel', style: 'cancel' },
         {
-          text: 'Delete',
+          text: 'Delete All', // Changed button text
           style: 'destructive',
           onPress: async () => {
             try {
               await resetRAGDatabase();
-              Alert.alert('Delete Complete', 'Restart app to re-load base profile.');
+              Alert.alert('Delete Complete', 'All RAG chunks have been cleared.');
               loadDocuments();
             } catch (e) {
               Alert.alert('Error', 'Failed to reset the RAG database.');
@@ -245,10 +191,7 @@ const UploadScreen: React.FC<UploadScreenProps> = ({ onBack, onOpenMenu }) => {
         style={styles.documentTextContainer}
         activeOpacity={0.7}
         onPress={() =>
-          router.push({
-            pathname: '/chunkDetail',
-            params: { chunkText: item.text },
-          })
+          Alert.alert("Chunk Detail", item.text)
         }
       >
         <Text style={styles.documentIndex}>RAG Chunk {index + 1}:</Text>
@@ -264,51 +207,52 @@ const UploadScreen: React.FC<UploadScreenProps> = ({ onBack, onOpenMenu }) => {
   );
 
   return (
-    <View style={styles.container}>
-      <View style={styles.headerContainer}>
-        <TouchableOpacity
-            onPress={onBack} // Use the onBack prop
-            style={styles.iconButton}
-          >
-            <Ionicons name="arrow-back" size={24} color="#111827" />
-        </TouchableOpacity>
-
-        <Text style={styles.header}>Upload Documents</Text>
-      </View>
-
-      <View style={styles.uploadSection}>
-        {uploading ? (
-          <View style={styles.progressContainer}>
-            <ActivityIndicator size="large" color="#007AFF" />
-            <Text style={styles.statusTextProgress}>{status}</Text>
+    <SafeAreaView style={styles.safeArea}>
+      <View style={styles.container}>
+        
+        <View style={styles.headerContainer}>
+          <Text style={styles.headerTitle}>Upload Data</Text>
+        </View>
+        
+        <ScrollView 
+          style={styles.scroll}
+          contentContainerStyle={styles.scrollContent}
+        >
+          <View style={styles.uploadSection}>
+            {uploading ? (
+              <View style={styles.progressContainer}>
+                <ActivityIndicator size="large" color="#4F46E5" />
+                <Text style={styles.statusTextProgress}>{status}</Text>
+              </View>
+            ) : (
+              <Button
+                title="Select Document (.txt only)" 
+                onPress={handleUpload}
+                color="#4F46E5"
+              />
+            )}
           </View>
-        ) : (
-          <Button
-            title="Select Document (PDF, TXT, JSON)"
-            onPress={handleUpload}
-            color="#007AFF"
+
+          <View style={styles.separator} />
+          
+          <View style={styles.listHeaderContainer}>
+            <Text style={styles.listHeader}>Processed RAG Chunks ({documents.length})</Text>
+            <TouchableOpacity onPress={handleResetRAG} style={styles.deleteAllButton}>
+              <Ionicons name="trash-outline" size={22} color="#4F46E5" />
+            </TouchableOpacity>
+          </View>
+
+          <FlatList
+            data={documents}
+            renderItem={renderDocument}
+            keyExtractor={(item) => item.id} 
+            style={styles.list}
+            scrollEnabled={false} // Disable FlatList scrolling, let ScrollView handle it
+            ListEmptyComponent={<Text style={styles.emptyText}>No documents processed yet.</Text>}
           />
-        )}
+        </ScrollView>
       </View>
-
-      <View style={styles.resetButtonContainer}>
-        <Button title="Delete All Data" onPress={handleResetRAG} color="#FF3B30" disabled={uploading} />
-      </View>
-
-      <View style={styles.separator} />
-      <Text style={styles.listHeader}>Processed RAG Chunks ({documents.length})</Text>
-
-      <FlatList
-        data={documents}
-        renderItem={renderDocument}
-        keyExtractor={(item) => item.id}
-        style={styles.list}
-        contentContainerStyle={{ paddingBottom: 100 }}
-        ListEmptyComponent={<Text style={styles.emptyText}>No documents processed yet.</Text>}
-      />
-
-
-    </View>
+    </SafeAreaView>
   );
 }
 
@@ -316,20 +260,31 @@ export default UploadScreen;
 
 // --- Styles ---
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 20, backgroundColor: '#f7f7f7' },
-  headerContainer: {
-    flexDirection: 'row',
-    justifyContent: 'center', // This will center the title
-    alignItems: 'center',
-    position: 'relative',      // This is crucial for absolute positioning the button
-    marginBottom: 20,        // We move this from 'header' to the container
+  safeArea: {
+    flex: 1,
+    backgroundColor: '#f7f7f7',
   },
-  header: { 
-    fontSize: 24, 
-    // marginBottom: 20, // <-- REMOVE THIS LINE
-    textAlign: 'center', 
-    fontWeight: 'bold', 
-    color: '#1c1c1e' 
+  container: { 
+    flex: 1, 
+    backgroundColor: '#f7f7f7' 
+  },
+  scroll: {
+    flex: 1,
+  },
+  scrollContent: {
+    padding: 20, 
+    paddingTop: 8,
+    paddingBottom: 80,
+  },
+  headerContainer: {
+    paddingHorizontal: 20,
+    paddingTop: 8,
+    paddingBottom: 16,
+  },
+  headerTitle: {
+    fontSize: 28,
+    fontWeight: 'bold',
+    color: '#4F46E5',
   },
   uploadSection: {
     marginBottom: 10,
@@ -342,29 +297,26 @@ const styles = StyleSheet.create({
     shadowRadius: 2,
     elevation: 2,
   },
-  resetButtonContainer: {
-    marginBottom: 20,
-    paddingHorizontal: 15,
-    paddingVertical: 10,
-    backgroundColor: '#fff',
-    borderRadius: 10,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.1,
-    shadowRadius: 2,
-    elevation: 2,
-  },
-  iconButton: {
-    position: 'absolute', // Position it relative to headerContainer
-    left: 0,              // Pin it to the far left
-    padding: 4,
-    zIndex: 1,            // Make sure it's on top
-  },
   progressContainer: { alignItems: 'center' },
   statusTextProgress: { marginTop: 15, color: '#007AFF', textAlign: 'center', fontWeight: '600' },
   separator: { height: 1, backgroundColor: '#e0e0e0', marginVertical: 15 },
-  listHeader: { fontSize: 18, fontWeight: 'bold', marginBottom: 10, color: '#4a4a4a' },
-  list: { flex: 1 },
+  listHeaderContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 10,
+  },
+  listHeader: { 
+    fontSize: 18, 
+    fontWeight: 'bold', 
+    color: '#4a4a4a' 
+  },
+  deleteAllButton: {
+    padding: 4,
+  },
+  list: { 
+    flexGrow: 0,
+  },
   documentItem: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -382,20 +334,4 @@ const styles = StyleSheet.create({
   documentSummary: { fontSize: 14, color: '#1c1c1e' },
   actionButton: { padding: 8 },
   emptyText: { textAlign: 'center', marginTop: 50, color: '#8e8e93' },
-  chatButton: {
-    position: 'absolute',
-    bottom: 30,
-    right: 30,
-    backgroundColor: '#007AFF',
-    width: 60,
-    height: 60,
-    borderRadius: 30,
-    justifyContent: 'center',
-    alignItems: 'center',
-    shadowColor: '#000',
-    shadowOpacity: 0.4,
-    shadowRadius: 5,
-    shadowOffset: { width: 0, height: 3 },
-    elevation: 6,
-  },
 });
