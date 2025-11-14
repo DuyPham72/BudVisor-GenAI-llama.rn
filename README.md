@@ -14,8 +14,7 @@ The system also integrates Retrieval-Augmented Generation (RAG) to **enhance con
 3. **Offline Operation** – No internet required for reasoning or retrieval.
 4. **Data Privacy** – All processing happens locally; user data never leaves the device.
 5. **Financial Literacy Support** – Explains transactions, terms, and financial topics in clear and simple language.
-6. **Interactive UI** – Built with **React Native** for a smooth and intuitive mobile experience.
-
+   
 ---
 
 ## Project Structure
