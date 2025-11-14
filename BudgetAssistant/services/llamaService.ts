@@ -51,7 +51,7 @@ export async function initModelsIfNeeded(opts?: {
       use_mlock: false,   // turn off mlock for Android
       n_ctx: 2048,        // medium context
       n_batch: 512,       // process 512 tokens at a time
-      n_threads: 1,       // use 6 threads
+      n_threads: 6,       // use 6 threads
     });
   }
 
@@ -64,7 +64,7 @@ export async function initModelsIfNeeded(opts?: {
       use_mlock: false,   // turn off mlock for Android
       n_ctx: 2048,        // medium context
       n_batch: 512,       // process 512 tokens at a time
-      n_threads: 1,       // use 6 threads
+      n_threads: 6,       // use 6 threads
       embedding: true,    // embedding enabled
     });
   }
@@ -78,7 +78,7 @@ export async function initModelsIfNeeded(opts?: {
       use_mlock: false, 
       n_ctx: 1024,      // smaller context
       n_batch: 512,     // process 512 tokens at a time
-      n_threads: 1,     // use 6 threads
+      n_threads: 6,     // use 6 threads
     });
   }
 
