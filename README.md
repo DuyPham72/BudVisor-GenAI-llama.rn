@@ -85,8 +85,23 @@ services/
 
 ---
 
-## System Pipeline
-
+## Usage
+1. Install dependencies
+   ```bash
+   npm install
+   ```
+2. Build the android environment
+   ```bash
+   npx expo prebuild
+   ```
+3. Create the app
+   ```bash
+   npx react-native run-android
+   ```
+4. Start the app
+   ```bash
+   npx expo run
+   ```
 
 ---
 
