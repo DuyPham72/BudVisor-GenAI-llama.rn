@@ -106,16 +106,24 @@ services/
 
 ## User Interface
 <p align="center">
-  <img src="demo/overall.png"><br/>
-  <i>Overall Screen</i>
+  <img src="demo/MainScreen.png" height="450" style="border-radius:12px; border:1px solid #ddd;" />
+   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <img src="demo/Detail.png" height="450" style="border-radius:12px; border:1px solid #ddd;" />
+   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <img src="demo/Upload.png" height="450" style="border-radius:12px; border:1px solid #ddd;" />
+   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <img src="demo/Chat.png" height="450" style="border-radius:12px; border:1px solid #ddd;" />
 </p>
 
+<p align="center"><i>App Screens</i></p>
+
+---
+
+## Demo
 <p align="center">
-  <img src="demo/catagories.png"><br/>
-  <i>Catagories Screen</i>
+  <img src="demo/Demo-FinLiteracy.gif" height="700" style="margin-right: 80px;" />
+   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <img src="demo/Demo-RAG.gif" height="700" />
 </p>
 
-<p align="center">
-  <img src="demo/chatbot screen.png"><br/>
-  <i>ChatBot Screen</i>
-</p>
+<p align="center"><i>On-Device AI Assistant Demonstration</i></p>
