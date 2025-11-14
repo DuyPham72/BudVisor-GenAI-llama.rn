@@ -104,7 +104,7 @@ services/
 
 ---
 
-## SAMPLE UX/UI FOR REFERENCE
+## User Interface
 <p align="center">
   <img src="demo/overall.png"><br/>
   <i>Overall Screen</i>
