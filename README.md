@@ -106,13 +106,13 @@ services/
 
 ## User Interface
 <p align="center">
-  <img src="demo/MainScreen.png" height="450" style="border-radius:12px; border:1px solid #ddd;" />
-   &nbsp;&nbsp;&nbsp;&nbsp;
-  <img src="demo/Detail.png" height="450" style="border-radius:12px; border:1px solid #ddd;" />
-   &nbsp;&nbsp;&nbsp;&nbsp;
-  <img src="demo/Upload.png" height="450" style="border-radius:12px; border:1px solid #ddd;" />
-   &nbsp;&nbsp;&nbsp;&nbsp;
-  <img src="demo/Chat.png" height="450" style="border-radius:12px; border:1px solid #ddd;" />
+  <img src="demo/MainScreen.png" height="425" style="border-radius:12px; border:1px solid #ddd;" />
+   &nbsp;&nbsp;&nbsp;
+  <img src="demo/Detail.png" height="425" style="border-radius:12px; border:1px solid #ddd;" />
+   &nbsp;&nbsp;&nbsp;
+  <img src="demo/Upload.png" height="425" style="border-radius:12px; border:1px solid #ddd;" />
+   &nbsp;&nbsp;&nbsp;
+  <img src="demo/Chat.png" height="425" style="border-radius:12px; border:1px solid #ddd;" />
 </p>
 
 <p align="center"><i>App Screens</i></p>
