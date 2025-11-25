@@ -2,15 +2,13 @@
 import RNFS from 'react-native-fs';
 import { initLlama, LlamaContext } from 'llama.rn';
 
-let rewriterContext: LlamaContext | null = null;
 let chatContext: LlamaContext | null = null;
 let embeddingContext: LlamaContext | null = null;
 
 // -------------------------- Model File Paths --------------------------
 const MODEL_DIR = RNFS.DocumentDirectoryPath + '/models';
-const REWRITE_MODEL_FILE = MODEL_DIR + '/granite-4.0-350m-Q8_0.gguf';
-const MODEL_FILE = MODEL_DIR + '/granite-4.0-1b-Q8_0.gguf';
-const EMBEDDING_FILE = MODEL_DIR + '/embeddinggemma-300M-Q8_0.gguf';
+const MODEL_FILE = MODEL_DIR + '/granite-4.0-1b-Q5_K_M.gguf';
+const EMBEDDING_FILE = MODEL_DIR + '/embeddinggemma-300m-Q4_0.gguf';
 
 // ------------------- Small LLM Model Initialization -------------------
 export async function initModelsIfNeeded(opts?: {
@@ -35,11 +33,6 @@ export async function initModelsIfNeeded(opts?: {
         onProgress?.(`embedding: ${p}`)
       );
     }
-    if (rewriteModelUrl) {
-      await ensureDownload(rewriteModelUrl, REWRITE_MODEL_FILE, (p) =>
-        onProgress?.(`rewriter: ${p}`)
-      );
-    }
   }
 
   if (!chatContext) {
@@ -49,7 +42,7 @@ export async function initModelsIfNeeded(opts?: {
     chatContext = await initLlama({
       model: modelUri,
       use_mlock: false,   // turn off mlock for Android
-      n_ctx: 2048,        // medium context
+      n_ctx: 4096,        // INCREASED for RAG + XML overhead
       n_batch: 512,       // process 512 tokens at a time
       n_threads: 6,       // use 6 threads
     });
@@ -68,19 +61,6 @@ export async function initModelsIfNeeded(opts?: {
       embedding: true,    // embedding enabled
     });
   }
-
-  if (!rewriterContext) {
-    onProgress?.('Initializing Services...');
-    const rewriterModelUri = 'file://' + REWRITE_MODEL_FILE;
-
-    rewriterContext = await initLlama({
-      model: rewriterModelUri,
-      use_mlock: false, 
-      n_ctx: 1024,      // smaller context
-      n_batch: 512,     // process 512 tokens at a time
-      n_threads: 6,     // use 6 threads
-    });
-  }
 
   return true;
 }
@@ -127,9 +107,4 @@ export function getChatContext() {
 export function getEmbeddingContext() {
   if (!embeddingContext) throw new Error('Embedding not initialized');
   return embeddingContext;
-}
-
-export function getRewriterContext() {
-  if (!rewriterContext) throw new Error('Rewriter not initialized');
-  return rewriterContext;
 }

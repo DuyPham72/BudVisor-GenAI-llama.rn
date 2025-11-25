@@ -7,13 +7,11 @@ import { initModelsIfNeeded } from '../services/llamaService';
 import { clearChatMemory } from '../services/dbService';
 import { ingestInitialDataIfNeeded } from '../services/dataIngestionService';
 
-const REWRITE_MODEL_FILE = RNFS.DocumentDirectoryPath + '/models/granite-4.0-h-350m-Q8_0.gguf';
-const MODEL_FILE = RNFS.DocumentDirectoryPath + '/models/granite-4.0-h-1b-Q8_0.gguf';
-const EMBEDDING_FILE = RNFS.DocumentDirectoryPath + '/models/embeddinggemma-300M-Q8_0.gguf';
+const MODEL_FILE = RNFS.DocumentDirectoryPath + '/models/granite-4.0-1b-Q5_K_M.gguf';
+const EMBEDDING_FILE = RNFS.DocumentDirectoryPath + '/models/embeddinggemma-300m-Q4_0.gguf';
 
-const REWRITE_MODEL_URL = 'https://huggingface.co/unsloth/granite-4.0-h-350m-GGUF/resolve/main/granite-4.0-h-350m-Q8_0.gguf';
-const MODEL_URL = 'https://huggingface.co/unsloth/granite-4.0-h-1b-GGUF/resolve/main/granite-4.0-h-1b-Q8_0.gguf';
-const EMBEDDING_URL = 'https://huggingface.co/unsloth/embeddinggemma-300m-GGUF/resolve/main/embeddinggemma-300M-Q8_0.gguf';
+const MODEL_URL = 'https://huggingface.co/unsloth/granite-4.0-1b-GGUF/resolve/main/granite-4.0-1b-Q5_K_M.gguf';
+const EMBEDDING_URL = 'https://huggingface.co/unsloth/embeddinggemma-300m-GGUF/resolve/main/embeddinggemma-300m-Q4_0.gguf';
 
 export default function SetupWelcome() {
   const [loading, setLoading] = useState(true);
@@ -40,19 +38,17 @@ export default function SetupWelcome() {
     };
 
     try {
-      const rewriteModelExists = await RNFS.exists(REWRITE_MODEL_FILE);
       const modelExists = await RNFS.exists(MODEL_FILE);
       const embeddingExists = await RNFS.exists(EMBEDDING_FILE);
 
       // 1. We always want to init models, even if they exist
-      if (modelExists && embeddingExists && rewriteModelExists) {
+      if (modelExists && embeddingExists) {
         setStatus('Initializing models...');
         await initModelsIfNeeded({ initializeOnly: true, onProgress: handleProgress });
       } else {
         setStatus('Downloading missing components...');
 
         await initModelsIfNeeded({
-          rewriteModelUrl: REWRITE_MODEL_URL,
           modelUrl: MODEL_URL,
           embeddingUrl: EMBEDDING_URL,
           onProgress: handleProgress,

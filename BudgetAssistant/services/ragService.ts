@@ -1,5 +1,5 @@
 // BudgetAssistant/services/ragService.ts
-import { getChatContext, getRewriterContext } from './llamaService';
+import { getChatContext } from './llamaService';
 import { addChatMessage, getChatHistory, getAllDocs } from './dbService';
 import { embedText } from './embeddingService';
 
@@ -12,7 +12,7 @@ interface Document {
 
 // --- Message INTERFACE ---
 interface ChatMessage {
-  role: 'user' | 'assistant';
+  role: 'user' | 'assistant' | 'system';
   text: string;
 }
 
@@ -32,8 +32,8 @@ function cosine(a: number[], b: number[]): number {
 export async function answerQuery(
   query: string,
   onPartial?: (chunk: string) => void,
-  topK = 1,
-  nPredict = 384
+  topK = 3, // Increased slightly for Granite context window
+  nPredict = 512
 ): Promise<string> {
   // Log start time
   const t0 = Date.now();
@@ -43,71 +43,64 @@ export async function answerQuery(
   // 1. PRE-RAG: HISTORY & QUERY REWRITING BLOCK 🧠
   // ----------------------------------------------------
 
-  // Step 1: Load recent conversation history (needed for rewriting & final prompt)
-  const history: ChatMessage[] = await getChatHistory(2); // last 1 Q&A pairs
+  // Step 1: Load recent conversation history
+  const history: ChatMessage[] = await getChatHistory(4); // Increased history slightly
 
-  // Step 2: Query Rewriting (if needed)
-  let retrievalQuery = query;
-  const vagueWords = /\b(that|this|it|those|these|him|her|them|that one|those ones)\b/i;
-  const isVague = vagueWords.test(query) || query.length < 25;
+  // Step 2: Query Rewriting (if needed)
+  let retrievalQuery = query;
+  const vagueWords = /\b(that|this|it|those|these|him|her|them|that one|those ones)\b/i;
+  const isVague = vagueWords.test(query);
 
   // Log history retrieve time of step 1
   const t1_rewrite = Date.now();
   console.log(`History Retrieve: ${t1_rewrite - t0}ms`);
 
   // ONLY rewrite if history exists AND the query is vague
-  if (history.length > 0 && isVague) {
-    console.log('Vague query detected, attempting query rewrite...');
-    const historyForRewrite = history
-      .map((m) => {
-        // Remove newlines and truncate long assistant replies
-        let text = m.text.length > 150 ? m.text.slice(0, 150) + '...' : m.text;
-        text = text.replace(/\n/g, ' '); // Remove newlines
-      })
-      .join('\n');
+  if (history.length > 0 && isVague) {
+    console.log('Vague query detected, attempting query rewrite...');
+    
+    // Format history for the rewriter using Granite format just to be safe/consistent
+    const historyForRewrite = history
+      .map((m) => `[${m.role.toUpperCase()}]: ${m.text.replace(/\n/g, ' ')}`)
+      .join('\n');
 
-    // A prompt specifically for rewriting the query
-    const rewritePrompt = `<bos><start_of_turn>user
-You are a query rewriter. Your task is to Your task is to rewrite the "User Question" to be a complete, standalone question. 
-1. Look at the "Chat History" to understand the user's *intent* (e.g., are they asking for transactions, a summary, a total, etc.?).
-2. Look at the "User Question" to find the new *topic* (e.g., "June", "food").
-3. Combine the intent and the topic into a new, self-contained question.
-4. Respond with ONLY the rewritten query and nothing else.
-
+    // Granite 4.0 Prompt for Rewriting
+    const rewritePrompt = `
+<|start_of_role|>system<|end_of_role|>You are a query rewriter. Your task is to rewrite the "User Question" to be a complete, standalone question. <|end_of_text|>
+<|start_of_role|>user<|end_of_role|>
 Chat History:
 ${historyForRewrite}
 
-User Question: ${query}
-<end_of_turn><start_of_turn>model
-Rewritten Question: `;
+User Question: ${query}<|end_of_text|>
+<|start_of_role|>assistant<|end_of_role|>Rewritten Question:`;
 
-    try {
+    try {
       // 1. Get the FAST rewriter model
-      const rewriteCtx = getRewriterContext(); 
+      const rewriteCtx = getChatContext(); 
       
       // 2. Use it to rewrite the query
-      const rewriteResult = await rewriteCtx.completion({
-        prompt: rewritePrompt,
-        n_predict: 128, // Don't need a long answer
-        stop: ['<end_of_turn>', '\n'],
-        temperature: 0.0, // Be deterministic
-      });
-      
-      const rewritten = rewriteResult.text.trim().replace(/["']/g, '');
-      
-      if (rewritten.length > 10) { // Safety check
-        retrievalQuery = rewritten;
-      }
-      console.log(`Original Query: "${query}"`);
-      console.log(`Retrieval Query: "${retrievalQuery}"`);
+      const rewriteResult = await rewriteCtx.completion({
+        prompt: rewritePrompt,
+        n_predict: 64,
+        stop: ['<|end_of_text|>', '\n', '<|start_of_role|>'], // Granite Stop Tokens
+        temperature: 0.0,
+      });
+      
+      const rewritten = rewriteResult.text.trim().replace(/["']/g, '');
+      
+      if (rewritten.length > 5) { // Safety check
+        retrievalQuery = rewritten;
+      }
+      console.log(`Original Query: "${query}"`);
+      console.log(`Retrieval Query: "${retrievalQuery}"`);
 
-    } catch (e) {
-      console.error('Query rewrite failed:', e);
-      // If rewrite fails, just use the original query
-      retrievalQuery = query;
-      console.log('Rewrite failed, using original query for retrieval.');
-    }
-  }
+    } catch (e) {
+      console.error('Query rewrite failed:', e);
+      // If rewrite fails, just use the original query
+      retrievalQuery = query;
+      console.log('Rewrite failed, using original query for retrieval.');
+    }
+  }
 
   // Log step 2 time
   const t2_rewrite = Date.now();
@@ -131,7 +124,7 @@ Rewritten Question: `;
   const allDocs: Document[] = await getAllDocs();
 
   // Step 3: Calculate similarity and select top K
-  const threshold = 0.4;
+  const threshold = 0.45;
   const scored = allDocs
     .map((doc) => ({ 
         ...doc, 
@@ -142,57 +135,71 @@ Rewritten Question: `;
     .slice(0, topK);
 
   // Log step 2 time
-  const t2_search = Date.now(); // ⏱️ ADD THIS
+  const t2_search = Date.now();
   console.log(`DB Search & Score: ${t2_search - t1_search}ms`);
 
   // Log score of retrieved docs
   console.log(`[RAG DEBUG] Top ${topK} doc scores (before filtering):`);
-  scored.forEach((doc, i) => {
-    console.log(`  Rank ${i + 1}: Score ${doc.score.toFixed(4)}, Text: "${doc.text.slice(0, 50)}..."`);
-  });
-
-  // Step 4: Format the retrieved context for the prompt
-  const contextText = scored
-    .map((d, i) => `[Source Chunk ${i + 1} (Score: ${d.score.toFixed(3)}):\n${d.text.slice(0, 1000)}]`) 
-    .join('\n---\n');
+  scored.forEach((doc, i) => {
+    console.log(`  Rank ${i + 1}: Score ${doc.score.toFixed(4)}, Text: "${doc.text.slice(0, 50)}..."`);
+  });
 
   console.log(`PROMPT AUGMENTATION & COMPLETION BLOCK`);
   // ----------------------------------------------------
   // 3. PROMPT AUGMENTATION & COMPLETION BLOCK
   // ----------------------------------------------------
 
-  // Step 1: Define system instructions
-  const systemInstruction = `
-You are BudVisor, a financial analyst. Provide practical, data-driven insights.
-Rules: Be concise, analytical, and round floats to 2 decimals.
+  // Step 1: Format Documents using Granite 4.0 XML JSON format
+  // Manual format: <documents>{"doc_id": 1, "title": "...", "text": "..."}{"doc_id": 2...}</documents>
+  let documentsXmlString = "";
+  if (scored.length > 0) {
+    const docJsonList = scored.map((d, i) => {
+      return JSON.stringify({
+        doc_id: i + 1,
+        title: "Financial Transaction Record", 
+        text: d.text,
+        source: "kaesi.json"
+      });
+    }).join('');
+    documentsXmlString = `<documents>${docJsonList}</documents>`;
+  }
+
+  // Step 2: Construct System Prompt
+  // Granite requires the system prompt to explicitly mention access to documents if they exist.
+  let systemPromptContent = `You are BudVisor, a financial analyst. Provide practical, data-driven insights.
+Rules:
+1. Round all money to 2 decimal places ($XX.XX).
+2. Be concise and professional.
+
 Format:
-**Summary**: \n[brief summary]  \n\n
-**Details**: \n[numbers, details] \n\n
-**Recommendation**: \n[advice]
-`;
+**Summary**: [brief summary]
+**Details**: [numbers, details]
+**Recommendation**: [advice]`;
 
-  // Step 2: Format the chat history
-  const formattedHistory = history.map((m) => {
-    const roleToken = m.role === 'user' ? 'user' : 'model';
-    return `<start_of_turn>${roleToken}\n${m.text}<end_of_turn>`;
-  }).join('');
+  if (documentsXmlString) {
+    // Append the standard Granite RAG boilerplate
+    systemPromptContent += ` You are a helpful assistant with access to the following documents. You may use one or more documents to assist with the user query. You are given a list of documents within <documents></documents> XML tags:${documentsXmlString} Write the response to the user's input by strictly aligning with the facts in the provided documents. If the information needed to answer the question is not available in the documents, inform the user that the question cannot be answered based on the available data.`;
+  } else {
+      systemPromptContent += ` No relevant financial documents found. Answer based on general financial knowledge only.`;
+  }
 
-  // Step 3: Create the augmented query with context
-  const augmentedQuery = `
-FINANCIAL CONTEXT:
-${contextText || "No relevant financial documents found in the database. Rely only on general financial knowledge."}
----
-${query}
-`;
+  // Step 3: Build the Full Prompt using Granite Tags
+  // <|start_of_role|>system<|end_of_role|>...<|end_of_text|>
+  // <|start_of_role|>user<|end_of_role|>...<|end_of_text|>
+  // <|start_of_role|>assistant<|end_of_role|>...<|end_of_text|>
 
-  // Step 4: FIX: Inject System Instruction ONLY if this is the FIRST turn.
-  const userContent = history.length === 0 
-    ? `${systemInstruction}\n\n${augmentedQuery}`
-    : augmentedQuery;
+  let prompt = `<|start_of_role|>system<|end_of_role|>${systemPromptContent}<|end_of_text|>`;
 
-  // Step 5: Combine everything into the final prompt string.
-  const prompt = `<bos>${formattedHistory}<end_of_turn><start_of_turn>user\n${userContent}<end_of_turn><start_of_turn>model
-`;
+  // Append History
+  history.forEach(msg => {
+    prompt += `<|start_of_role|>${msg.role}<|end_of_role|>${msg.text}<|end_of_text|>`;
+  });
+
+  // Append Current User Query
+  prompt += `<|start_of_role|>user<|end_of_role|>${query}<|end_of_text|>`;
+  
+  // Append Start of Assistant Generation
+  prompt += `<|start_of_role|>assistant<|end_of_role|>`;
 
   console.log(`LLM COMPLETION BLOCK`);
   // ----------------------------------------------------------
@@ -204,7 +211,9 @@ ${query}
   let buffer = '';
   const flushTokenCount = 1;
   let tokenCounter = 0;
-  const stopWords = ['<end_of_turn>', '<start_of_turn>user', '<start_of_turn>model', '[Stopped]'];
+
+  // Granite 4.0 Stop Words
+  const stopWords = ['<|end_of_text|>', '<|end_of_role|>', '<|start_of_role|>'];
 
   const ctx = getChatContext();
   let result;
@@ -214,19 +223,18 @@ ${query}
         prompt,
         n_predict: nPredict,
         top_p: 0.95,
-        top_k: 64,
-        temperature: 0.5,
-        min_p: 0.02,
+        top_k: 40,
+        temperature: 0.0,
         stop: stopWords, 
       },
       (data) => {
         if (!data?.token) return;
 
         // Log time to first token in step 4
-        if (t_first_token === 0) {
-          t_first_token = Date.now();
-          console.log(`Time to First Token: ${t_first_token - t1_completion}ms`);
-        }
+        if (t_first_token === 0) {
+          t_first_token = Date.now();
+          console.log(`Time to First Token: ${t_first_token - t1_completion}ms`);
+        }
 
         buffer += data.token;
         tokenCounter++;
@@ -249,18 +257,14 @@ ${query}
   if (buffer.length > 0) onPartial?.(buffer);
 
   // Clean the reply by removing tokens
-  const rawReply = result.text.trim();
-  let reply = result.text
-  .replace(/You are BudVisor[\s\S]*?(Recommendation:)?/i, '') // remove system echo
-  .replace(/FINANCIAL CONTEXT:[\s\S]*$/, '') // remove context echo
-  .replace(/<.*?>/g, '') // strip tokens
-  .trim();
+  // Granite sometimes outputs the tool_response tags if confused, so we strip those too just in case
+  let reply = result.text;
   
-  const userTurnIndex = reply.indexOf('<start_of_turn>user');
-  if (userTurnIndex !== -1) {
-    reply = reply.substring(0, userTurnIndex);
-  }
-  reply = reply.replace(/<end_of_turn>|<end_of_text>|\n\n/g, '').trim();
+  // Cleanup logic
+  reply = reply
+    .replace(/<\|.*?\|>/g, '') // remove all special tokens like <|end_of_text|>
+    .replace(/<documents>.*?<\/documents>/gs, '') // Should not happen in output, but safety first
+    .trim();
   
   // Save chat history
   await addChatMessage('user', query);
@@ -268,7 +272,7 @@ ${query}
 
   // Log total time
   const t_end = Date.now();
-  console.log(`[--- TOTAL TIME: ${t_end - t0}ms ---`);
+  console.log(`[--- TOTAL TIME: ${t_end - t0}ms ---`);
 
   return reply;
 }
