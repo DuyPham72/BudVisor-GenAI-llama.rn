@@ -9,7 +9,7 @@ let embeddingContext: LlamaContext | null = null;
 // -------------------------- Model File Paths --------------------------
 const MODEL_DIR = RNFS.DocumentDirectoryPath + '/models';
 const REWRITE_MODEL_FILE = MODEL_DIR + '/granite-4.0-350m-Q8_0.gguf';
-const MODEL_FILE = MODEL_DIR + '/granite-4.0-h-1b-Q8_0.gguf';
+const MODEL_FILE = MODEL_DIR + '/granite-4.0-1b-Q8_0.gguf';
 const EMBEDDING_FILE = MODEL_DIR + '/embeddinggemma-300M-Q8_0.gguf';
 
 // ------------------- Small LLM Model Initialization -------------------
