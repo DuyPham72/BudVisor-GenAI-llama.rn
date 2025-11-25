@@ -58,15 +58,12 @@ services/
 
 | Models                    | Functions              |
 |---------------------------|:----------------------:|
-| granite-4.0-h-350m        | Query Rewriter         |
-| granite-4.0-h-1b          | Reasoning              |
+| granite-4.0-1b          | Reasoning              |
 | embeddinggemma-300m       | Embedding              |
 
-- **granite-4.0-h-350m**:
-  Download the model from [Hugging Face](https://huggingface.co/ibm-granite/granite-4.0-h-350m)
   
 - **granite-4.0-h-1b**:
-  Download the model from [Hugging Face](https://huggingface.co/ibm-granite/granite-4.0-h-1b)
+  Download the model from [Hugging Face](https://huggingface.co/ibm-granite/granite-4.0-1b)
 
 - **embeddinggemma-300m**:
   Download the model from [Hugging Face](https://huggingface.co/google/embeddinggemma-300m)
