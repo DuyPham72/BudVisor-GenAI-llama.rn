@@ -1,4 +1,4 @@
-# Local Financial Assistant on edge device using SLM with RAG
+# A Local Financial Assistant on Edge Devices Powered by Small Language Models and RAG
 A **local AI agent** implemented with **llama.rn** and **React Native**, designed for **financial reasoning** on mobile.
 
 The Small Language Model (SLM) can **explain financial terms and concepts** in simple language to help users **improve users’ financial literacy**.
@@ -47,14 +47,14 @@ services/
 ├── dbService.ts               # Handles local storage operations
 ├── embeddingService.ts        # Generates embeddings for RAG retrieval
 ├── idGenerator.ts             # Generates unique document IDs
-├── llamaService.ts            # Interface for llama.rn LLM
+├── llamaService.ts            # Interface for llama.rn SLM
 └── ragService.ts              # Retrieval-Augmented Generation logic
 
 ```
 
 ---
 
-## LLM Models
+## SLM Models
 
 | Models                    | Functions              |
 |---------------------------|:----------------------:|
@@ -73,9 +73,9 @@ services/
 ## System Architecture
 - **React Native** – Mobile UI framework
 - **TypeScript** – Strongly typed code for better maintainability
-- **llama.rn** – On-device LLM inference
+- **llama.rn** – On-device SLM inference
 - **SQLite** – Local database for storing transactions and embeddings
-- **LLM models** - Reason over financial data, answer user questions, and summarize spending behavior
+- **SLM models** - Reason over financial data, answer user questions, and summarize spending behavior
 - **RAG** – Enhances reasoning accuracy
 - **SVG** – Data visualization for spending insights
 
