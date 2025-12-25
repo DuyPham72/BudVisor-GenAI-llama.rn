@@ -1,4 +1,4 @@
-# Local Financial Assistant using LLM with RAG
+# Local Financial Assistant on edge device using SLM with RAG
 A **local AI agent** implemented with **llama.rn** and **React Native**, designed for **financial reasoning** on mobile.
 
 The Small Language Model (SLM) can **explain financial terms and concepts** in simple language to help users **improve users’ financial literacy**.
