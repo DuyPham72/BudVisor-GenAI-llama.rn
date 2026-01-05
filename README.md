@@ -54,7 +54,7 @@ services/
 
 ---
 
-## SLM Models
+## SLM Used
 
 | Models                    | Functions              |
 |---------------------------|:----------------------:|
