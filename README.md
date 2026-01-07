@@ -84,7 +84,7 @@ services/
 ## Usage
 1. Go into project directory
     ```bash
-   cd .\BudgetAssistant\
+   cd .\BudVisor-GenAI-llama.rn\
    ```
 2. Install dependencies
    ```bash
